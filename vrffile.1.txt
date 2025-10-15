@@ -1,0 +1,31 @@
+{
+  "timestamp": "2025-10-09T01:24:02.250Z",
+  "blockNumber": 63964820,
+  "blockHash": "0x604b2b5b09cf6036eab07be179062d7f13a18a9dd11810d8447c919a2b52787a",
+  "winner": "0xf2d1c6B7f763C9b52142FfA551fF60268E1489B4",
+  "randomIndex": "3407",
+  "snapshotHash": "8adc4c238ca6c007b4d82e1bf9ec6877089e7c47abde22ecdd09fb84a07b6b42",
+  "seed": "0x1deaa4e1890144b4f90d9d7e11d14783d3c4e480d7bb9c631ac059582202919c",
+  "eligible": [
+    {
+      "owner": "0x22d870f46f19069BADAb0ed119344eEfa0565028",
+      "tickets": "1260"
+    },
+    {
+      "owner": "0x667654b863558ec00FDACD0cc0745bC9c6f7aEBa",
+      "tickets": "116"
+    },
+    {
+      "owner": "0x7D6D440779c625ECEf5322f68536e612eAaDeaBf",
+      "tickets": "8168"
+    },
+    {
+      "owner": "0xE9D917C5f7C48A0A213FE3E339FD810fcfD8EdD8",
+      "tickets": "83167"
+    },
+    {
+      "owner": "0xf2d1c6B7f763C9b52142FfA551fF60268E1489B4",
+      "tickets": "7286"
+    }
+  ]
+}

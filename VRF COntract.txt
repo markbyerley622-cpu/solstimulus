@@ -1,0 +1,158 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@chainlink/contracts/src/v0.8/vrf/VRFConsumerBaseV2.sol";
+import "@chainlink/contracts/src/v0.8/vrf/interfaces/VRFCoordinatorV2Interface.sol";
+
+contract DynastyJackpot is VRFConsumerBaseV2 {
+    address public owner;
+
+    VRFCoordinatorV2Interface private COORDINATOR;
+    uint64 public subscriptionId;
+    bytes32 public keyHash;
+    uint32 public callbackGasLimit = 2500000;
+    uint16 public requestConfirmations = 3;
+
+    uint256 public taxPool; // 🧧 Accumulated tax (in wei)
+
+    struct Tier {
+        string name;
+        uint256 minPrize;
+        uint256 maxPrize;
+        address[] holders;
+    }
+
+    mapping(uint256 => Tier) public tiers;
+
+    struct Winner {
+        address wallet;
+        uint256 tier;
+        uint256 prizeAmount;
+        uint256 timestamp;
+        string tierName;
+    }
+
+    Winner[] public winners;
+
+    struct RequestData {
+        uint256 tier;
+    }
+    mapping(uint256 => RequestData) public requests;
+
+    event WinnerPicked(address indexed wallet, string tierName, uint256 prize, uint256 time);
+    event RandomnessRequested(uint256 indexed requestId, uint256 tier);
+    event HoldersUpdated(uint256 tier, uint256 count);
+    event TaxAdded(uint256 amount, uint256 total);
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not owner");
+        _;
+    }
+
+    // 🧠 Updated Constructor
+    constructor(
+        address vrfCoordinator,
+        bytes32 _keyHash,
+        uint64 _subscriptionId
+    ) VRFConsumerBaseV2(vrfCoordinator) {
+        owner = msg.sender;
+        COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator);
+        keyHash = _keyHash;
+        subscriptionId = _subscriptionId;
+
+        // Initialize tier ranges
+        tiers[1].name = "🐉 Mini Makis";
+        tiers[1].minPrize = 0.01 ether;
+        tiers[1].maxPrize = 0.1 ether;
+
+        tiers[2].name = "🧧 Lucky Rollers";
+        tiers[2].minPrize = 0.1 ether;
+        tiers[2].maxPrize = 0.3 ether;
+
+        tiers[3].name = "👑 High Emperors";
+        tiers[3].minPrize = 0.5 ether;
+        tiers[3].maxPrize = 1 ether;
+
+        tiers[4].name = "💴 Mega Jackpot Pool";
+        tiers[4].minPrize = 0; // Will be calculated dynamically
+        tiers[4].maxPrize = 0;
+    }
+
+    // 💰 Allow contract to receive BNB (for tax pool)
+    receive() external payable {
+        taxPool += msg.value;
+        emit TaxAdded(msg.value, taxPool);
+    }
+
+    // Manual top-up from frontend (for testing)
+    function addTax() external payable onlyOwner {
+        taxPool += msg.value;
+        emit TaxAdded(msg.value, taxPool);
+    }
+
+    // ====== Dynamic Holder Update ======
+    function updateTierHolders(uint256 tier, address[] calldata newHolders) external onlyOwner {
+        delete tiers[tier].holders;
+        for (uint256 i = 0; i < newHolders.length; i++) {
+            tiers[tier].holders.push(newHolders[i]);
+        }
+        emit HoldersUpdated(tier, newHolders.length);
+    }
+
+    // ====== Request Random Winner ======
+    function requestRandomWinner(uint256 tier) external onlyOwner returns (uint256 requestId) {
+        require(tiers[tier].holders.length > 0, "No holders in tier");
+        requestId = COORDINATOR.requestRandomWords(
+            keyHash,
+            subscriptionId,
+            requestConfirmations,
+            callbackGasLimit,
+            1
+        );
+        requests[requestId] = RequestData({tier: tier});
+        emit RandomnessRequested(requestId, tier);
+    }
+
+    // ====== Fulfill Randomness ======
+    function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal override {
+        uint256 tier = requests[requestId].tier;
+        Tier storage t = tiers[tier];
+        require(t.holders.length > 0, "No holders in tier");
+
+        uint256 randomIndex = randomWords[0] % t.holders.length;
+        address winner = t.holders[randomIndex];
+
+        // Calculate prize
+        uint256 prize;
+        if (tier == 4) {
+            // Mega Jackpot = 100% of remaining tax pool
+            prize = (taxPool * 100) / 100;
+            taxPool -= prize; // deduct from pool
+        } else {
+            // Random between min and max range
+            uint256 randomAmount = t.minPrize +
+                (randomWords[0] % (t.maxPrize - t.minPrize));
+            prize = randomAmount;
+        }
+
+        winners.push(Winner({
+            wallet: winner,
+            tier: tier,
+            prizeAmount: prize,
+            timestamp: block.timestamp,
+            tierName: t.name
+        }));
+
+        emit WinnerPicked(winner, t.name, prize, block.timestamp);
+    }
+
+    // ====== View ======
+    function getAllWinners() external view returns (Winner[] memory) {
+        return winners;
+    }
+
+    function getTierInfo(uint256 tier) external view returns (string memory name, uint256 minPrize, uint256 maxPrize, uint256 count) {
+        Tier storage t = tiers[tier];
+        return (t.name, t.minPrize, t.maxPrize, t.holders.length);
+    }
+}

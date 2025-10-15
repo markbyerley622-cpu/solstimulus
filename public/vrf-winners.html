@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🐉 Dynasty Jackpot | VRF Winners</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500&display=swap" rel="stylesheet">
+  <style>
+    /* === Winner Table === */
+    .winner-table-section {
+      background: rgba(43, 0, 0, 0.85);
+      border: 2px solid #FFD700;
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 1000px;
+      margin: 50px auto;
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+    }
+
+    .winner-table-section h2 {
+      color: #FFD700;
+      text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+      margin-bottom: 20px;
+      font-size: 1.6rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: #F7F4EA;
+      text-align: center;
+      font-size: 0.95rem;
+      background: rgba(30, 0, 0, 0.5);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    thead {
+      background: rgba(255, 215, 0, 0.15);
+      border-bottom: 2px solid #FFD700;
+    }
+
+    th, td {
+      padding: 12px 8px;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    th {
+      color: #FFD700;
+      font-weight: bold;
+      text-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
+    }
+
+    tr:hover {
+      background: rgba(255, 215, 0, 0.1);
+      transition: background 0.3s;
+    }
+
+    .vrf-link, .tx-link {
+      color: #FFD700;
+      text-decoration: underline;
+      transition: 0.3s;
+    }
+
+    .vrf-link:hover, .tx-link:hover {
+      text-shadow: 0 0 6px rgba(255, 215, 0, 0.6);
+    }
+
+    @media (max-width: 768px) {
+      table {
+        font-size: 0.85rem;
+      }
+      th, td {
+        padding: 10px 6px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- === HEADER === -->
+  <header class="top-header">
+    <div class="logo">🏯 <span>DYNASTY JACKPOT</span></div>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="faq.html">FAQ</a>
+      <a href="vrf-winners.html" class="active">VRF Winners</a>
+      <a href="#">On-Chain Smart Contract</a>
+    </nav>
+  </header>
+
+  <!-- === HERO === -->
+  <section class="hero">
+    <h1>🏆 Verifiable Random Winners</h1>
+    <p class="subtitle">All results are powered by <strong>Chainlink VRF</strong> — ensuring transparent, provably fair draws.</p>
+  </section>
+
+
+
+  <!-- === FULL WINNERS TABLE === -->
+<section class="winner-table-section">
+  <h2>🏮 FULL Previous Verified Winners</h2>
+
+  <table id="winners-table">
+    <thead>
+      <tr>
+        <th>Pool</th>
+        <th>Wallet</th>
+        <th>Amount Won</th>
+        <th>VRF File</th>
+        <th>Transaction ID</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="6">Loading winners...</td></tr>
+    </tbody>
+  </table>
+
+  <!-- pagination controls -->
+  <div id="pagination" class="pagination"></div>
+</section>
+
+<script>
+async function loadWinners() {
+  try {
+    const res = await fetch('winner.json?_=' + Date.now()); // prevent caching
+    const winners = await res.json();
+    setupPagination(winners);
+  } catch (err) {
+    console.error('Error loading winners:', err);
+    const tableBody = document.querySelector('#winners-table tbody');
+    tableBody.innerHTML = '<tr><td colspan="6">⚠️ Failed to load winners.</td></tr>';
+  }
+}
+
+function setupPagination(winners) {
+  const rowsPerPage = 10;
+  const pageCount = Math.ceil(winners.length / rowsPerPage);
+  let currentPage = 1;
+
+  const pagination = document.getElementById('pagination');
+  const tableBody = document.querySelector('#winners-table tbody');
+
+  function displayPage(page) {
+    tableBody.innerHTML = '';
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    const pageData = winners.slice(start, end);
+
+    pageData.forEach(winner => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${winner.pool || '🏮 Unknown Pool'}</td>
+        <td>${winner.wallet || 'N/A'}</td>
+        <td>${winner.amount || '0.0 BNB'}</td>
+        <td><a href="/VRF/${winner.vrf}" class="vrf-link" target="_blank">View VRF</a></td>
+        <td><a href="${winner.tx || '#'}" class="tx-link" target="_blank">Txn Hash</a></td>
+        <td>${winner.date || 'N/A'}</td>
+      `;
+      tableBody.appendChild(row);
+    });
+  }
+
+  function renderPagination() {
+    pagination.innerHTML = '';
+    for (let i = 1; i <= pageCount; i++) {
+      const button = document.createElement('button');
+      button.textContent = i;
+      button.className = i === currentPage ? 'active' : '';
+      button.addEventListener('click', () => {
+        currentPage = i;
+        displayPage(currentPage);
+        renderPagination();
+      });
+      pagination.appendChild(button);
+    }
+  }
+
+  displayPage(currentPage);
+  renderPagination();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadWinners();
+  // Auto-refresh every 60 seconds
+  setInterval(loadWinners, 60000);
+});
+</script>
+
+
+  <!-- === FOOTER === -->
+  <footer>
+    <p>© 2025 Dynasty Jackpot — Built on BNB Chain</p>
+    <div class="disclaimer">
+      <p><strong>免责声明 DISCLAIMER</strong></p>
+      <p>这不是彩票或国家附属游戏。仅供娱乐。请查看您当地的法律。</p>
+      <p>Not a lottery or state-affiliated game. Entertainment only. Please check your local laws.</p>
+      <p>⚠️ 加密货币涉及风险 | Cryptocurrency involves risk</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🐉 Dynasty Jackpot | Fortune Awaits</title>
+  <link rel="stylesheet" href="style.css" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500&display=swap" rel="stylesheet">
+
+</head>
+<body>
+<header class="top-header">
+  <div class="logo">
+    🏯 <span>DYNASTY JACKPOT</span>
+  </div>
+
+  <!-- 🪙 Global Contract Address display -->
+  <div id="contract-address" class="contract-address">
+    Loading contract address...
+  </div>
+
+<nav class="nav">
+  <a href="faq.html">FAQ</a>
+  <a href="vrf-winners.html">VRF Winners</a>
+  <a href="https://bscscan.com/address/0x96373121b2e845c730a4c018de5fbcea3d68373a#code" target="_blank">
+    On-Chain Smart Contract
+  </a>
+</nav>
+
+
+</header>
+
+<!-- === Hidden Dev Panel === -->
+<div id="dev-panel" class="hidden">
+  <h3>🧙‍♂️ Developer Panel</h3>
+  <div class="dev-buttons">
+    <button id="dev-w1">W1</button>
+    <button id="dev-w2">W2</button>
+    <button id="dev-w3">W3</button>
+    <button id="dev-rt">RT (Reset Timers)</button>
+    <button id="dev-ca">CA (Update Contract)</button> <!-- 🪙 New button -->
+  </div>
+  <p class="dev-note">Authorized dev access only</p>
+</div>
+
+
+<section class="hero">
+
+  <!-- === Follow & Compatibility Buttons === -->
+  <div class="extra-buttons">
+    <button id="follow-x" class="main-btn">🐦 Follow X</button>
+    <button id="compatible" class="main-btn">📱 Compatible for All Devices</button>
+  </div>
+
+  <h1>💫 Choose Your Fortune 🧧</h1>
+  <p class="subtitle">
+    4 Prize Pools — Equal Entry. <br>
+    More Holdings = Higher Rewards.
+  </p>
+
+  <div class="jackpot-overview">
+    <h2>💴 Dynasty Jackpot Pools</h2>
+    <ul class="jackpot-tiers">
+      <li>🐉 <strong>Mini Makis</strong> — Draw every <strong>15 minutes</strong></li>
+      <li>🧧 <strong>Lucky Rollers</strong> — Draw every <strong>25 minutes</strong></li>
+      <li>👑 <strong>High Emperors</strong> — Draw every <strong>45 minutes</strong></li>
+      <li>💎 <strong>Mega Jackpot</strong> — Daily draw for all holders</li>
+    </ul>
+
+    <div class="tax-box">
+      <h3>📊 Tokenomics Breakdown</h3>
+      <p>🧮 <strong>Total Tax:</strong> 5%</p>
+      <ul>
+        <li>💰 4.5% — Distributed to active holders across all prize pools</li>
+        <li>⚙️ 0.5% — Marketing & Developer Maintenance</li>
+      </ul>
+    </div>
+
+    <div class="distribution-box">
+      <h3>🏆 Mega Jackpot Distribution</h3>
+      <p>The tax grows throughout the day and fuels every prize pool payout in real time.</p>
+<p>At the end of each day, 100% of the remaining tax is awarded to one lucky holder in the Mega Jackpot draw.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- === MEGA JACKPOT FEATURE SECTION === -->
+<section class="mega-highlight">
+  <div class="mega-jackpot-box">
+    <h2>💎 The Mega Jackpot</h2>
+    <p class="intro">
+      Available to <strong>all holders</strong> — regardless of tier.
+    </p>
+    <div class="pool-prize large">
+      🏆 Prize: <strong>Daily Grand Draw</strong>
+    </div>
+    <div class="timer large">
+      Next Draw: <span id="mega-timer">24:00:00</span>
+    </div>
+
+    <div class="bnb-balance">
+      💰 Current MEGA Jackpot Pool: <strong id="bnbPool">Loading...</strong> BNB
+    </div>
+
+    <p class="note">
+      At the end of each day, <strong>100%</strong> of the remaining tax pool is distributed
+      to one lucky holder. The ultimate Dynasty reward.
+    </p>
+  </div>
+
+  <!-- === Mega Jackpot Winner Box === -->
+  <div class="winner-box ultra highlight" data-pool="Mega Jackpot">
+   <div class="overlay">🕒 Winners will be revealed after timer ends</div>
+  <div class="content">
+    <h3>💎 Mega Jackpot — Recent Winner</h3>
+    <p><strong>Wallet:</strong> <span class="wallet">—</span></p>
+    <p><strong>VRF File:</strong> <span class="vrf">—</span></p>
+    <p><strong>Amount Won:</strong> <span class="amount">—</span></p>
+    <p><strong>Transaction ID:</strong> <span class="tx">—</span></p>
+  </div>
+</section>
+
+<!-- === OTHER POOLS SECTION === -->
+<section class="pools">
+  <div class="pool-row">
+    <div class="pool small">
+      <h3>🐉 Mini Makis</h3>
+      <p>Hold <strong>10K+ Tokens</strong> to enter this pool.</p>
+      <div class="pool-prize">💰 Prize: <strong>0.03-0.1 BNB</strong></div>
+      <div class="timer">Next Draw: <span id="small-timer">00:25:00</span></div>
+      <p class="note">Frequent draws for smaller holders.</p>
+    </div>
+
+    <div class="pool mid">
+      <h3>🧧 Lucky Rollers</h3>
+      <p>Hold <strong>500K+ Tokens</strong> to qualify.</p>
+      <div class="pool-prize">💰 Prize: <strong>0.15-0.4 BNB</strong></div>
+      <div class="timer">Next Draw: <span id="mid-timer">00:50:00</span></div>
+      <p class="note">Mid-tier jackpot — solid odds, higher prizes.</p>
+    </div>
+
+    <div class="pool mega">
+      <h3>👑 High Emperors</h3>
+      <p>Hold <strong>1M+ Tokens</strong> to enter elite draws.</p>
+      <div class="pool-prize">💰 Prize: <strong>0.5 – 1 BNB</strong></div>
+      <div class="timer">Next Draw: <span id="mega-timer2">02:00:00</span></div>
+      <p class="note">Exclusive high-tier rewards for top holders.</p>
+    </div>
+  </div>
+
+<!-- === Winners Row for Other Pools === -->
+<section class="winner-row">
+
+  <!-- 🐉 Mini Makis -->
+  <div class="winner-box small" data-pool="Mini Makis">
+    <div class="overlay">🕒 Winners will be revealed after timer ends</div>
+    <div class="content">
+      <h4>🐉 Mini Makis — Recent Winner</h4>
+      <p><strong>Wallet:</strong> <span class="wallet">—</span></p>
+      <p><strong>VRF File:</strong> <span class="vrf">—</span></p>
+      <p><strong>Amount Won:</strong> <span class="amount">—</span></p>
+      <p><strong>Transaction ID:</strong> <span class="tx">—</span></p>
+    </div>
+  </div>
+
+  <!-- 🧧 Lucky Rollers -->
+  <div class="winner-box mid" data-pool="Lucky Rollers">
+    <div class="overlay">🕒 Winners will be revealed after timer ends</div>
+    <div class="content">
+      <h4>🧧 Lucky Rollers — Recent Winner</h4>
+      <p><strong>Wallet:</strong> <span class="wallet">—</span></p>
+      <p><strong>VRF File:</strong> <span class="vrf">—</span></p>
+      <p><strong>Amount Won:</strong> <span class="amount">—</span></p>
+      <p><strong>Transaction ID:</strong> <span class="tx">—</span></p>
+    </div>
+  </div>
+
+  <!-- 👑 High Emperors -->
+  <div class="winner-box mega" data-pool="High Emperors">
+    <div class="overlay">🕒 Winners will be revealed after timer ends</div>
+    <div class="content">
+      <h4>👑 High Emperors — Recent Winner</h4>
+      <p><strong>Wallet:</strong> <span class="wallet">—</span></p>
+      <p><strong>VRF File:</strong> <span class="vrf">—</span></p>
+      <p><strong>Amount Won:</strong> <span class="amount">—</span></p>
+      <p><strong>Transaction ID:</strong> <span class="tx">—</span></p>
+    </div>
+  </div>
+
+</section>
+
+<div class="view-all-container">
+  <a href="vrf-winners.html" class="view-all-btn">🔍 View All Verified Winners</a>
+</div>
+
+
+<section class="winners">
+  <h2>🏮 Previous Winners</h2>
+  <ul id="winners-list">
+    <li>Loading previous winners...</li>
+  </ul>
+</section>
+
+
+  <footer>
+  <p>© 2025 Dynasty Jackpot — Built on BNB Chain</p>
+  <div class="disclaimer">
+    <p><strong>免责声明 DISCLAIMER</strong></p>
+    <p>这不是彩票或国家附属游戏。仅供娱乐。请查看您当地的法律。</p>
+    <p>Not a lottery or state-affiliated game. Entertainment only. Please check your local laws.</p>
+    <p>⚠️ 加密货币涉及风险 | Cryptocurrency involves risk</p>
+  </div>
+</footer>
+
+
+  <script src="script.js"></script>
+</body>
+</html>
