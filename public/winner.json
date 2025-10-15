@@ -2,7 +2,7 @@
   {
     "tier": "Mini Makis",
     "wallet": "0x9999b0CdD35d7F3B281BA02EfC0d228486940515",
-    "vrf": "http://localhost:3000/VRF/VRF4.json",
+    "vrf": "https://dynastyjackpot.asia/VRF/VRF4.json",
     "amount": "0.09BNB",
     "txid": "https://bscscan.com/tx/0x50586f52175d389bd4d1a9cdb5878db9750eaae96a8f3594963ba0a478d7f1bb",
     "date": "2025-10-14T14:07:12.374Z"
@@ -10,7 +10,7 @@
   {
     "tier": "Lucky Rollers",
     "wallet": "0x1FE8a587960714DA224E48dCD96da845CADE6D4d",
-    "vrf": "http://localhost:3000/VRF/VRF3.json",
+    "vrf": "https://dynastyjackpot.asia/VRF/VRF3.json",
     "amount": "0.22 BNB",
     "txid": "https://bscscan.com/tx/0x106ee6a06f8d31daa2a200d1f99f1d6fb98902f1dbd8587404b9bd76d37d30f4",
     "date": "2025-10-14T13:56:53.641Z"
@@ -18,7 +18,7 @@
   {
     "tier": "Lucky Rollers",
     "wallet": "0x1FE8a587960714DA224E48dCD96da845CADE6D4d",
-    "vrf": "http://localhost:3000/VRF/VRF3.json",
+    "vrf": "https://dynastyjackpot.asia/VRF/VRF3.json",
     "amount": "0.22 BNB",
     "txid": "https://bscscan.com/tx/0x106ee6a06f8d31daa2a200d1f99f1d6fb98902f1dbd8587404b9bd76d37d30f4",
     "date": "2025-10-14T13:56:34.132Z"
@@ -26,7 +26,7 @@
   {
     "tier": "Lucky Rollers",
     "wallet": "0x1FE8a587960714DA224E48dCD96da845CADE6D4d",
-    "vrf": "http://localhost:3000/VRF/VRF3.json",
+    "vrf": "https://dynastyjackpot.asia/VRF/VRF3.json",
     "amount": "0.22 BNB",
     "txid": "https://bscscan.com/tx/0x106ee6a06f8d31daa2a200d1f99f1d6fb98902f1dbd8587404b9bd76d37d30f4",
     "date": "2025-10-14T13:55:31.971Z"
@@ -34,7 +34,7 @@
   {
     "tier": "Mini Makis",
     "wallet": "0xa20fe649ae7861eb2cabb4d84e509520b2d44444",
-    "vrf": "http://localhost:3000/VRF/VRF1.json",
+    "vrf": "https://dynastyjackpot.asia/VRF/VRF1.json",
     "amount": "0.1BNB",
     "txid": "https://bscscan.com/tx/0x106ee6a06f8d31daa2a200d1f99f1d6fb98902f1dbd8587404b9bd76d37d30f4",
     "date": "2025-10-14T13:54:36.139Z"
@@ -42,7 +42,7 @@
   {
     "tier": "Mini Makis",
     "wallet": "0xa20fe649ae7861eb2cabb4d84e509520b2d44444",
-    "vrf": "http://localhost:3000/VRF/VRF1.json",
+    "vrf": "https://dynastyjackpot.asia/VRF/VRF1.json",
     "amount": "0.1BNB",
     "txid": "https://bscscan.com/tx/0x106ee6a06f8d31daa2a200d1f99f1d6fb98902f1dbd8587404b9bd76d37d30f4",
     "date": "2025-10-14T13:49:34.092Z"
@@ -50,7 +50,7 @@
   {
     "tier": "Mini Makis",
     "wallet": "0x1FE8a587960714DA224E48dCD96da845CADE6D4d",
-    "vrf": "http://localhost:3000/VRF/VRF5.json",
+    "vrf": "https://dynastyjackpot.asia/VRF/VRF5.json",
     "amount": "0.02 BNB",
     "txid": "https://bscscan.com/tx/0x106ee6a06f8d31daa2a200d1f99f1d6fb98902f1dbd8587404b9bd76d37d30f4",
     "date": "2025-10-14T13:07:51.327Z"
@@ -58,7 +58,7 @@
   {
     "tier": "Mini Makis",
     "wallet": "0x1FE8a587960714DA224E48dCD96da845CADE6D4d",
-    "vrf": "http://localhost:3000/VRF/VRF20.json",
+    "vrf": "https://dynastyjackpot.asia/VRF/VRF20.json",
     "amount": "0.03 BNB",
     "txid": "https://bscscan.com/tx/0x106ee6a06f8d31daa2a200d1f99f1d6fb98902f1dbd8587404b9bd76d37d30f4",
     "date": "2025-10-14T13:06:55.539Z"
@@ -66,7 +66,7 @@
   {
     "tier": "Mini Makis",
     "wallet": "0x1FE8a587960714DA224E48dCD96da845CADE6D4d",
-    "vrf": "http://localhost:3000/VRF/VRF20.json",
+    "vrf": "https://dynastyjackpot.asia/VRF/VRF20.json",
     "amount": "0.03 BNB",
     "txid": "https://bscscan.com/tx/0x106ee6a06f8d31daa2a200d1f99f1d6fb98902f1dbd8587404b9bd76d37d30f4",
     "date": "2025-10-14T13:06:22.946Z"
@@ -74,7 +74,7 @@
   {
     "tier": "Mini Makis",
     "wallet": "0x167b9E9ca3c174be804C6b638d3F403F3D086028",
-    "vrf": "http://localhost:3000/VRF/VRF2.json",
+    "vrf": "https://dynastyjackpot.asia/VRF/VRF2.json",
     "amount": "0.04 BNB",
     "txid": "https://bscscan.com/tx/0x106ee6a06f8d31daa2a200d1f99f1d6fb98902f1dbd8587404b9bd76d37d30f4",
     "date": "2025-10-14T12:28:43.056Z"
