@@ -140,41 +140,42 @@ tr:hover {
 }
 
 /* === Responsive Design === */
-@media (max-width: 992px) {
-  .top-header {
-    padding: 12px 20px;
-  }
-  .nav {
-    gap: 14px;
-  }
-  .logo {
-    font-size: 1.1rem;
-  }
-}
-
 @media (max-width: 768px) {
   .top-header {
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-  }
-
-  .logo {
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-  }
-
-  .nav {
     flex-wrap: wrap;
-    gap: 10px;
+    justify-content: space-between;
+    padding: 12px 20px;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  /* Hide nav by default */
+  .nav {
+    display: none;
+    flex-direction: column;
     width: 100%;
-    justify-content: center;
+    text-align: center;
+    margin-top: 12px;
+    background: rgba(43, 0, 0, 0.9);
+    border-top: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 0 0 15px 15px;
+    padding: 10px 0;
+  }
+
+  /* When menu active */
+  .nav.active {
+    display: flex;
   }
 
   .nav-link {
     font-size: 0.95rem;
-    padding: 6px 10px;
+    padding: 8px 10px;
+    width: 100%;
   }
+}
+
 
   .winner-table-section {
     padding: 20px;
@@ -219,20 +220,32 @@ tr:hover {
 <body>
 
 
- <!-- === HEADER === -->
-  <header class="top-header">
-    <div class="logo">🏯 <span>DYNASTY JACKPOT</span></div>
-    <nav class="nav">
-      <a href="index.html" class="nav-link">Home</a>
-      <a href="faq.html" class="nav-link">FAQ</a>
-      <a href="vrf-winners.html" class="nav-link active">VRF Winners</a>
-      <a href="https://bscscan.com/address/0x96373121b2e845c730a4c018de5fbcea3d68373a#code"
-         class="nav-link highlight"
-         target="_blank">
-        On-Chain Smart Contract
-      </a>
-    </nav>
-  </header>
+<!-- === HEADER === -->
+<header class="top-header">
+  <div class="logo">
+    🏯 <span>DYNASTY JACKPOT</span>
+  </div>
+
+  <!-- === Hamburger Menu (for mobile) === -->
+  <div class="menu-toggle" id="menu-toggle">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="faq.html" class="nav-link">FAQ</a>
+    <a href="vrf-winners.html" class="nav-link active">VRF Winners</a>
+    <a 
+      href="https://bscscan.com/address/0x96373121b2e845c730a4c018de5fbcea3d68373a#code"
+      class="nav-link highlight"
+      target="_blank">
+      On-Chain Smart Contract
+    </a>
+  </nav>
+</header>
+
 
   <!-- === HERO === -->
   <section class="hero">

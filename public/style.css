@@ -147,47 +147,6 @@ body::before {
 }
 
 
-/* === BURGER MENU === */
-.menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  color: #FFD700;
-  font-size: 1.8rem;
-  cursor: pointer;
-}
-
-/* Mobile view */
-@media (max-width: 768px) {
-  .menu-toggle {
-    display: block;
-    z-index: 1100;
-  }
-
-  .nav {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 70px;
-    left: 0;
-    right: 0;
-    background: rgba(20, 0, 0, 0.95);
-    border-bottom: 2px solid #FFD700;
-    padding: 20px 0;
-    text-align: center;
-  }
-
-  .nav.active {
-    display: flex; /* show menu when toggled */
-    animation: slideDown 0.3s ease forwards;
-  }
-
-  @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-}
-
 
 /* === HERO SECTION === */
 .hero {
@@ -417,40 +376,60 @@ body::before {
   margin-top: -10px;
 }
 
-
-/* === Mobile Hamburger Menu === */
+/* === Mobile Hamburger Menu (Dynasty Style) === */
 .menu-toggle {
   display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 38px;
-  height: 32px;
+  width: 42px;
+  height: 38px;
   cursor: pointer;
   z-index: 200;
+  border: 2px solid rgba(255, 215, 0, 0.6);
+  border-radius: 8px;
+  background: rgba(43, 0, 0, 0.85);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.25);
+  transition: all 0.3s ease;
 }
 
+/* Lines */
 .menu-toggle span {
-  background: #FFD700;
+  background: linear-gradient(90deg, #FFD700, #FF3131); /* gold → red */
   height: 3px;
   width: 26px;
   margin: 4px 0;
   border-radius: 3px;
   transition: all 0.3s ease;
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
 }
 
 /* Animate to X when open */
 .menu-toggle.open span:nth-child(1) {
   transform: rotate(45deg) translate(5px, 5px);
+  background: #FF3131;
+  box-shadow: 0 0 10px rgba(255, 49, 49, 0.8);
 }
+
 .menu-toggle.open span:nth-child(2) {
   opacity: 0;
 }
+
 .menu-toggle.open span:nth-child(3) {
   transform: rotate(-45deg) translate(5px, -5px);
+  background: #FF3131;
+  box-shadow: 0 0 10px rgba(255, 49, 49, 0.8);
 }
 
-/* Responsive navigation */
+/* Hover / Tap glow */
+.menu-toggle:hover,
+.menu-toggle.open {
+  background: linear-gradient(90deg, rgba(255, 49, 49, 0.25), rgba(255, 215, 0, 0.25));
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4), 0 0 25px rgba(255, 49, 49, 0.3);
+  border-color: #FFD700;
+}
+
+/* === Responsive navigation === */
 @media (max-width: 768px) {
   .menu-toggle {
     display: flex;
@@ -488,7 +467,6 @@ body::before {
     text-align: center;
   }
 }
-
 
 /* === Mobile Optimization === */
 @media (max-width: 768px) {
@@ -965,43 +943,4 @@ footer .disclaimer p:last-child {
 }
 
 
-/* === NAVBAR MOBILE FIX === */
-.nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 0.8rem;
-  text-align: center;
-}
-
-.nav-link {
-  white-space: nowrap;          /* prevents weird line breaks */
-  overflow: hidden;             /* hide overflow if it’s too long */
-  text-overflow: ellipsis;      /* adds "..." if it’s too long */
-  max-width: 95vw;              /* keeps within mobile width */
-  padding: 0.5rem 0.9rem;
-  border-radius: 10px;
-}
-
-/* Highlighted link (contract) */
-.nav-link.highlight {
-  background: rgba(255, 215, 0, 0.1);
-  border: 1px solid gold;
-  font-weight: 600;
-}
-
-/* === MOBILE RESPONSIVE NAV === */
-@media (max-width: 600px) {
-  .nav {
-    flex-direction: column;     /* stack vertically */
-    gap: 0.5rem;
-  }
-
-  .nav-link {
-    font-size: 0.95rem;
-    width: 100%;
-    max-width: 90%;
-    text-align: center;
-  }
-}
+  
