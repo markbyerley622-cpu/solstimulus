@@ -1,4 +1,15 @@
 
+const menuToggle = document.getElementById('menu-toggle');
+const navMenu = document.querySelector('.nav');
+
+if (menuToggle && navMenu) {
+  menuToggle.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+    menuToggle.classList.toggle('open');
+  });
+}
+
+
 // === REVEAL WINNER (triggered only by timer end) ===
 async function revealWinner(poolName) {
   try {
@@ -486,16 +497,6 @@ function updateWinner(tier) {
       console.error("⚠️ Server error:", err);
       alert("⚠️ Server error — check console");
     });
-}
-
-const menuToggle = document.getElementById('menu-toggle');
-const navMenu = document.querySelector('.nav');
-
-if (menuToggle && navMenu) {
-  menuToggle.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-    menuToggle.classList.toggle('open');
-  });
 }
 
 

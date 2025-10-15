@@ -147,6 +147,48 @@ body::before {
 }
 
 
+/* === BURGER MENU === */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #FFD700;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+    z-index: 1100;
+  }
+
+  .nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: rgba(20, 0, 0, 0.95);
+    border-bottom: 2px solid #FFD700;
+    padding: 20px 0;
+    text-align: center;
+  }
+
+  .nav.active {
+    display: flex; /* show menu when toggled */
+    animation: slideDown 0.3s ease forwards;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+
 /* === HERO SECTION === */
 .hero {
   text-align: center;
