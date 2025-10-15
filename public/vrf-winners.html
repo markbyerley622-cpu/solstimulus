@@ -7,86 +7,230 @@
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500&display=swap" rel="stylesheet">
   <style>
-    /* === Winner Table === */
-    .winner-table-section {
-      background: rgba(43, 0, 0, 0.85);
-      border: 2px solid #FFD700;
-      border-radius: 15px;
-      padding: 30px;
-      max-width: 1000px;
-      margin: 50px auto;
-      box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
-    }
 
-    .winner-table-section h2 {
-      color: #FFD700;
-      text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
-      margin-bottom: 20px;
-      font-size: 1.6rem;
-    }
+/* === Dynasty Header === */
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(180deg, rgba(43, 0, 0, 0.95), rgba(20, 0, 0, 0.85));
+  padding: 14px 30px;
+  border-bottom: 2px solid #FFD700;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.25);
+  border-radius: 0 0 20px 20px;
+  backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      color: #F7F4EA;
-      text-align: center;
-      font-size: 0.95rem;
-      background: rgba(30, 0, 0, 0.5);
-      border-radius: 10px;
-      overflow: hidden;
-    }
+/* === Logo === */
+.logo {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.3rem;
+  color: #FFD700;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
 
-    thead {
-      background: rgba(255, 215, 0, 0.15);
-      border-bottom: 2px solid #FFD700;
-    }
+.logo span {
+  color: #F7F4EA;
+}
 
-    th, td {
-      padding: 12px 8px;
-      border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-    }
+/* === Navigation === */
+.nav {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
 
-    th {
-      color: #FFD700;
-      font-weight: bold;
-      text-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
-    }
+.nav-link {
+  color: #FFD700;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
 
-    tr:hover {
-      background: rgba(255, 215, 0, 0.1);
-      transition: background 0.3s;
-    }
+.nav-link:hover,
+.nav-link.active {
+  color: #FF3131;
+  text-shadow: 0 0 8px #FFD700;
+  transform: scale(1.05);
+}
 
-    .vrf-link, .tx-link {
-      color: #FFD700;
-      text-decoration: underline;
-      transition: 0.3s;
-    }
+/* === Highlight External Link === */
+.nav-link.highlight {
+  color: #FFD700;
+  border: 1.5px solid #FFD700;
+  padding: 6px 14px;
+  border-radius: 10px;
+  background: rgba(43, 0, 0, 0.5);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
 
-    .vrf-link:hover, .tx-link:hover {
-      text-shadow: 0 0 6px rgba(255, 215, 0, 0.6);
-    }
+.nav-link.highlight:hover {
+  background: linear-gradient(90deg, #FFD700, #FF3131);
+  color: #000;
+  text-shadow: none;
+}
 
-    @media (max-width: 768px) {
-      table {
-        font-size: 0.85rem;
-      }
-      th, td {
-        padding: 10px 6px;
-      }
-    }
+/* === Winner Table Section === */
+.winner-table-section {
+  background: rgba(43, 0, 0, 0.85);
+  border: 2px solid #FFD700;
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 1000px;
+  margin: 50px auto;
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+  overflow-x: auto;
+}
+
+/* === Table === */
+.winner-table-section h2 {
+  color: #FFD700;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+  margin-bottom: 20px;
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #F7F4EA;
+  text-align: center;
+  font-size: 0.95rem;
+  background: rgba(30, 0, 0, 0.5);
+  border-radius: 10px;
+  overflow: hidden;
+  min-width: 600px; /* ensures scroll on small screens */
+}
+
+thead {
+  background: rgba(255, 215, 0, 0.15);
+  border-bottom: 2px solid #FFD700;
+}
+
+th, td {
+  padding: 12px 8px;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+th {
+  color: #FFD700;
+  font-weight: bold;
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
+}
+
+tr:hover {
+  background: rgba(255, 215, 0, 0.1);
+  transition: background 0.3s;
+}
+
+.vrf-link, .tx-link {
+  color: #FFD700;
+  text-decoration: underline;
+  transition: 0.3s;
+}
+
+.vrf-link:hover, .tx-link:hover {
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.6);
+}
+
+/* === Responsive Design === */
+@media (max-width: 992px) {
+  .top-header {
+    padding: 12px 20px;
+  }
+  .nav {
+    gap: 14px;
+  }
+  .logo {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-header {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .logo {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+
+  .nav {
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .nav-link {
+    font-size: 0.95rem;
+    padding: 6px 10px;
+  }
+
+  .winner-table-section {
+    padding: 20px;
+    margin: 30px 10px;
+  }
+
+  table {
+    font-size: 0.85rem;
+  }
+
+  th, td {
+    padding: 10px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    font-size: 1rem;
+  }
+
+  .nav {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .nav-link {
+    display: block;
+    width: 100%;
+    text-align: center;
+    border-radius: 6px;
+  }
+
+  .winner-table-section h2 {
+    font-size: 1.2rem;
+  }
+}
+
   </style>
 </head>
 
 <body>
-  <!-- === HEADER === -->
+
+
+ <!-- === HEADER === -->
   <header class="top-header">
     <div class="logo">🏯 <span>DYNASTY JACKPOT</span></div>
     <nav class="nav">
-      <a href="index.html">Home</a>
-      <a href="faq.html">FAQ</a>
-      <a href="vrf-winners.html" class="active">VRF Winners</a>
-      <a href="#">On-Chain Smart Contract</a>
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="faq.html" class="nav-link">FAQ</a>
+      <a href="vrf-winners.html" class="nav-link active">VRF Winners</a>
+      <a href="https://bscscan.com/address/0x96373121b2e845c730a4c018de5fbcea3d68373a#code"
+         class="nav-link highlight"
+         target="_blank">
+        On-Chain Smart Contract
+      </a>
     </nav>
   </header>
 

@@ -392,6 +392,8 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+
+
 // === UI HELPER: Update Winner Box ===
 function updateWinnerBox(tier, data) {
   const tierMap = {
@@ -485,6 +487,17 @@ function updateWinner(tier) {
       alert("⚠️ Server error — check console");
     });
 }
+
+const menuToggle = document.getElementById('menu-toggle');
+const navMenu = document.querySelector('.nav');
+
+if (menuToggle && navMenu) {
+  menuToggle.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+    menuToggle.classList.toggle('open');
+  });
+}
+
 
 // === AUTO-LOAD WINNERS FOR EVERYONE ===
 async function loadWinners(showReveal = false) {
@@ -712,6 +725,7 @@ document.addEventListener("DOMContentLoaded", loadPreviousWinners);
 document.querySelectorAll(".winner-box").forEach((box) => {
   box.classList.remove("revealed");
 });
+
 
 
 // === DEV BUTTON BINDINGS ===

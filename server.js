@@ -264,6 +264,17 @@ app.post("/api/update-contract", (req, res) => {
   res.json({ success: true });
 });
 
+// === Serve all .html pages properly ===
+app.get("/:page", (req, res, next) => {
+  const page = req.params.page;
+  const filePath = path.join(__dirname, "public", `${page}`);
+  if (fs.existsSync(filePath)) {
+    return res.sendFile(filePath);
+  }
+  next();
+});
+
+
 
 // === FALLBACK: 404 handler ===
 app.use((req, res) => res.status(404).json({ error: "Not Found" }));

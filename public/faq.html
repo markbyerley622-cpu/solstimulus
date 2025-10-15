@@ -6,21 +6,177 @@
   <title>🐉 Dynasty Jackpot | FAQ</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500&display=swap" rel="stylesheet">
+
+<!-- 💎 Dynasty Header Styles (you can move this to style.css later) -->
+  <style>
+    /* === Dynasty Header === */
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(180deg, rgba(43, 0, 0, 0.95), rgba(20, 0, 0, 0.85));
+  padding: 14px 30px;
+  border-bottom: 2px solid #FFD700;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.25);
+  border-radius: 0 0 20px 20px;
+  backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* === Logo === */
+.logo {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.3rem;
+  color: #FFD700;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+.logo span {
+  color: #F7F4EA;
+}
+
+/* === Navigation === */
+.nav {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+
+.nav-link {
+  color: #FFD700;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #FF3131;
+  text-shadow: 0 0 8px #FFD700;
+  transform: scale(1.05);
+}
+
+/* === Highlight External Link === */
+.nav-link.highlight {
+  color: #FFD700;
+  border: 1.5px solid #FFD700;
+  padding: 6px 14px;
+  border-radius: 10px;
+  background: rgba(43, 0, 0, 0.5);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+.nav-link.highlight:hover {
+  background: linear-gradient(90deg, #FFD700, #FF3131);
+  color: #000;
+  text-shadow: none;
+}
+
+/* === Hamburger Menu (Hidden on Desktop) === */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+  width: 28px;
+  height: 22px;
+}
+
+.menu-toggle span {
+  height: 3px;
+  background: #FFD700;
+  margin: 3px 0;
+  border-radius: 3px;
+  transition: 0.3s;
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  .top-header {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 12px 20px;
+  }
+
+  .logo {
+    font-size: 1.1rem;
+  }
+
+  /* Show hamburger */
+  .menu-toggle {
+    display: flex;
+  }
+
+  /* Hide nav by default */
+  .nav {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    margin-top: 12px;
+    background: rgba(43, 0, 0, 0.9);
+    border-top: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 0 0 15px 15px;
+    padding: 10px 0;
+  }
+
+  /* When menu active */
+  .nav.active {
+    display: flex;
+  }
+
+  .nav-link {
+    font-size: 0.95rem;
+    padding: 8px 10px;
+    width: 100%;
+  }
+}
+
+/* Even smaller phones */
+@media (max-width: 480px) {
+  .logo {
+    font-size: 1rem;
+  }
+  .nav-link {
+    font-size: 0.9rem;
+  }
+}
+
+  </style>
 </head>
+
 <body>
 
-  <!-- === HEADER === -->
-  <header class="top-header">
-    <div class="logo">
-      🏯 <span>DYNASTY JACKPOT</span>
-    </div>
-    <nav class="nav">
-      <a href="index.html">Home</a>
-      <a href="faq.html" class="active">FAQ</a>
-      <a href="vrf-winners.html">VRF Winners</a>
-      <a href="#">On-Chain Smart Contract</a>
-    </nav>
-  </header>
+<!-- === HEADER === -->
+<header class="top-header">
+  <div class="logo">
+    🏯 <span>DYNASTY JACKPOT</span>
+  </div>
+
+  <!-- === Hamburger Menu (for mobile) === -->
+  <div class="menu-toggle" id="menu-toggle">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+
+  <nav class="nav">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="faq.html" class="nav-link active">FAQ</a>
+    <a href="vrf-winners.html" class="nav-link">VRF Winners</a>
+    <a href="https://bscscan.com/address/0x96373121b2e845c730a4c018de5fbcea3d68373a#code"
+       class="nav-link highlight"
+       target="_blank">
+      On-Chain Smart Contract
+    </a>
+  </nav>
+</header>
+
 
   <!-- === HERO === -->
   <section class="hero">
@@ -93,6 +249,8 @@
       <p>⚠️ 加密货币涉及风险 | Cryptocurrency involves risk</p>
     </div>
   </footer>
+
+
 
   <!-- === BACKGROUND EFFECTS === -->
   <script src="script.js"></script>

@@ -1,20 +1,3 @@
-/* Keep the background dragon behind everything */
-#dragonCanvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(circle at center, #050505, #000);
-}
-
-/* Make all page content render above the dragon layer */
-header, section, footer {
-  position: relative;
-  z-index: 10;
-}
 
 /* === Dynasty Jackpot: Imperial Edition === */
 body {
@@ -49,6 +32,9 @@ body::before {
   100% { transform: translateX(120%) translateY(10%) rotate(0deg); opacity: 0.1; }
 }
 
+
+
+
 /* === Header === */
 .top-header {
   background: linear-gradient(90deg, #2b0000 0%, #400000 50%, #2b0000 100%);
@@ -73,6 +59,32 @@ body::before {
   word-break: break-all; /* keeps long address readable */
 }
 
+.contract-address {
+  flex: 1;
+  text-align: center;
+  font-family: "Courier New", monospace;
+  font-size: 0.9rem;
+  color: #FFD700;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  max-width: 90vw;
+  line-height: 1.3;
+}
+
+@media (max-width: 600px) {
+  .top-header {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+
+  .contract-address {
+    font-size: 0.8rem;
+    padding: 0 10px;
+  }
+}
+
+
 
 
 .logo {
@@ -86,17 +98,54 @@ body::before {
   gap: 8px;
 }
 
-.nav a {
-  color: #F7F4EA;
-  margin-left: 20px;
+/* === Navigation Bar (Imperial Red & Golden Edition) === */
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  background: linear-gradient(180deg, rgba(43, 0, 0, 0.95), rgba(20, 0, 0, 0.85));
+  padding: 14px 24px;
+  border-bottom: 2px solid #FFD700; /* Golden border */
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.25);
+  backdrop-filter: blur(6px);
+}
+
+/* === Links === */
+.nav-link {
+  color: #FFD700; /* Gold text */
   text-decoration: none;
-  font-weight: 500;
-  transition: 0.3s;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
 }
-.nav a:hover {
+
+/* === Hover Effects === */
+.nav-link:hover {
+  color: #FF3131; /* Imperial Red hover */
+  text-shadow: 0 0 10px #FFD700;
+  transform: scale(1.08);
+}
+
+/* === Highlight External Link === */
+.nav-link.highlight {
   color: #FFD700;
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
+  border: 1.5px solid #FFD700;
+  padding: 6px 14px;
+  border-radius: 10px;
+  background: rgba(43, 0, 0, 0.5);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
 }
+
+.nav-link.highlight:hover {
+  background: linear-gradient(90deg, #FFD700, #FF3131);
+  color: #000;
+  text-shadow: none;
+  transform: scale(1.1);
+}
+
 
 /* === HERO SECTION === */
 .hero {
@@ -325,6 +374,79 @@ body::before {
 .winner-row {
   margin-top: -10px;
 }
+
+
+/* === Mobile Hamburger Menu === */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 38px;
+  height: 32px;
+  cursor: pointer;
+  z-index: 200;
+}
+
+.menu-toggle span {
+  background: #FFD700;
+  height: 3px;
+  width: 26px;
+  margin: 4px 0;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+/* Animate to X when open */
+.menu-toggle.open span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.menu-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+.menu-toggle.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Responsive navigation */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+  }
+
+  .nav {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(43, 0, 0, 0.95);
+    border-bottom: 2px solid #FFD700;
+    box-shadow: 0 4px 25px rgba(255, 215, 0, 0.2);
+    backdrop-filter: blur(6px);
+    display: none;
+    padding: 15px 0;
+  }
+
+  .nav.active {
+    display: flex;
+    animation: slideDown 0.3s ease forwards;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .nav-link {
+    font-size: 1.1rem;
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+  }
+}
+
 
 /* === Mobile Optimization === */
 @media (max-width: 768px) {
@@ -798,4 +920,46 @@ footer .disclaimer p:last-child {
 
 .main-btn:hover {
   animation: golden-glow 1.5s infinite alternate;
+}
+
+
+/* === NAVBAR MOBILE FIX === */
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  text-align: center;
+}
+
+.nav-link {
+  white-space: nowrap;          /* prevents weird line breaks */
+  overflow: hidden;             /* hide overflow if it’s too long */
+  text-overflow: ellipsis;      /* adds "..." if it’s too long */
+  max-width: 95vw;              /* keeps within mobile width */
+  padding: 0.5rem 0.9rem;
+  border-radius: 10px;
+}
+
+/* Highlighted link (contract) */
+.nav-link.highlight {
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid gold;
+  font-weight: 600;
+}
+
+/* === MOBILE RESPONSIVE NAV === */
+@media (max-width: 600px) {
+  .nav {
+    flex-direction: column;     /* stack vertically */
+    gap: 0.5rem;
+  }
+
+  .nav-link {
+    font-size: 0.95rem;
+    width: 100%;
+    max-width: 90%;
+    text-align: center;
+  }
 }
