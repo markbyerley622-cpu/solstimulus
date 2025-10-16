@@ -7,6 +7,8 @@ const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const app = express();
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
 
 
 // === MIDDLEWARE ===
@@ -251,16 +253,25 @@ app.get("/api/contract", (req, res) => {
 // Update contract address (requires dev key)
 app.post("/api/update-contract", (req, res) => {
   const { address, key } = req.body;
+  
+  // Security check
   if (key !== process.env.DEV_KEY) {
     return res.status(403).json({ success: false, error: "Invalid dev key" });
   }
 
+  // Validate address
   if (!address || !address.startsWith("0x") || address.length !== 42) {
     return res.status(400).json({ success: false, error: "Invalid contract address format" });
   }
 
+  // Save new address
   fs.writeFileSync(CONTRACT_FILE, JSON.stringify({ address }, null, 2));
   console.log(`🪙 Updated global contract address: ${address}`);
+
+  // 🔥 Broadcast live update to all connected clients
+  io.emit("contractUpdated");
+
+  // Respond success
   res.json({ success: true });
 });
 
@@ -279,7 +290,6 @@ app.get("/:page", (req, res, next) => {
 // === FALLBACK: 404 handler ===
 app.use((req, res) => res.status(404).json({ error: "Not Found" }));
 
-// === START SERVER ===
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`✅ Dynasty Jackpot server running on port ${PORT}`));
+http.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
 

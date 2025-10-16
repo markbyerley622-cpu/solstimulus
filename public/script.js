@@ -621,6 +621,7 @@ document.getElementById("dev-ca")?.addEventListener("click", async () => {
   const data = await res.json();
   if (data.success) {
     alert(`✅ Contract address updated:\n${address}`);
+await loadContractAddress(); // 🔄 refresh the displayed contract instantly
   } else {
     alert(`⚠️ Failed: ${data.error}`);
   }
@@ -717,6 +718,13 @@ async function loadPreviousWinners() {
     list.innerHTML = "<li>⚠️ Error loading winners.</li>";
   }
 }
+
+const socket = io();
+socket.on("contractUpdated", () => {
+  console.log("🔄 Contract updated globally, refreshing...");
+  loadContractAddress();
+});
+
 
 // Auto-run on page load
 document.addEventListener("DOMContentLoaded", loadPreviousWinners);
