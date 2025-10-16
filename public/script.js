@@ -719,11 +719,6 @@ async function loadPreviousWinners() {
   }
 }
 
-const socket = io();
-socket.on("contractUpdated", () => {
-  console.log("🔄 Contract updated globally, refreshing...");
-  loadContractAddress();
-});
 
 
 // Auto-run on page load
