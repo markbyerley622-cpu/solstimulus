@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🐉 Dynasty Jackpot | Fortune Awaits</title>
+  <title>🐉 CHINESE POWERBALL | Fortune Awaits</title>
   <link rel="stylesheet" href="style.css" />
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500&display=swap" rel="stylesheet">
 
@@ -11,7 +11,7 @@
 <body>
 <header class="top-header">
   <div class="logo">
-    🏯 <span>DYNASTY JACKPOT</span>
+    🏯 <span>CHINESE POWERBALL</span>
   </div>
 
   <!-- 🪙 Global Contract Address -->
@@ -31,7 +31,7 @@
     <a href="faq.html" class="nav-link">❓ FAQ</a>
     <a href="vrf-winners.html" class="nav-link">🏆 VRF Winners</a>
     <a 
-      href="https://bscscan.com/address/0x96373121b2e845c730a4c018de5fbcea3d68373a#code"
+      href="https://solscan.io/account/VRFzZoJdhFWL8rkvu87LpKM3RbcVezpMEc6X5GVDr7y#cards"
       target="_blank"
       rel="noopener noreferrer"
       class="nav-link highlight"
@@ -49,10 +49,12 @@
     <button id="dev-w2">W2</button>
     <button id="dev-w3">W3</button>
     <button id="dev-rt">RT (Reset Timers)</button>
-    <button id="dev-ca">CA (Update Contract)</button> <!-- 🪙 New button -->
+    <button id="dev-ca">CA (Update Contract)</button>
+    <button id="dev-db">DB (Dev Burn)</button> <!-- 🔥 Added burn button -->
   </div>
   <p class="dev-note">Authorized dev access only</p>
 </div>
+
 
 
 <section class="hero">
@@ -70,22 +72,23 @@
   </p>
 
   <div class="jackpot-overview">
-    <h2>💴 Dynasty Jackpot Pools</h2>
+    <h2>💴 CHINESE POWERBALL Pools</h2>
     <ul class="jackpot-tiers">
       <li>🐉 <strong>Mini Makis</strong> — Draw every <strong>15 minutes</strong></li>
       <li>🧧 <strong>Lucky Rollers</strong> — Draw every <strong>25 minutes</strong></li>
       <li>👑 <strong>High Emperors</strong> — Draw every <strong>45 minutes</strong></li>
       <li>💎 <strong>Mega Jackpot</strong> — Daily draw for all holders</li>
     </ul>
+<div class="tax-box">
+  <h3>📊 Tokenomics Breakdown</h3>
+  <p>🧮 <strong>Total Fee:</strong> 0.3%</p>
+  <ul>
+    <li>💰 0.25% — Distributed to active holders & prize pools</li>
+    <li>⚙️ 0.05% — Creator rewards & maintenance</li>
+   <li>🔥 <strong>Every 250k market cap</strong> — Dev performs a <strong>10% SPL token burn</strong></li>
+  </ul>
+</div>
 
-    <div class="tax-box">
-      <h3>📊 Tokenomics Breakdown</h3>
-      <p>🧮 <strong>Total Tax:</strong> 5%</p>
-      <ul>
-        <li>💰 4.5% — Distributed to active holders across all prize pools</li>
-        <li>⚙️ 0.5% — Marketing & Developer Maintenance</li>
-      </ul>
-    </div>
 
     <div class="distribution-box">
       <h3>🏆 Mega Jackpot Distribution</h3>
@@ -111,7 +114,7 @@
     </div>
 
     <div class="bnb-balance">
-      💰 Current MEGA Jackpot Pool: <strong id="bnbPool">Loading...</strong> BNB
+      💰 Current MEGA Jackpot Pool: <strong id="bnbPool">Loading...</strong> SOL
     </div>
 
     <p class="note">
@@ -138,7 +141,7 @@
     <div class="pool small">
       <h3>🐉 Mini Makis</h3>
       <p>Hold <strong>10K+ Tokens</strong> to enter this pool.</p>
-      <div class="pool-prize">💰 Prize: <strong>0.02-0.1 BNB</strong></div>
+      <div class="pool-prize">💰 Prize: <strong>0.1-0.5 Sol </strong></div>
       <div class="timer">Next Draw: <span id="small-timer">00:25:00</span></div>
       <p class="note">Frequent draws for smaller holders.</p>
     </div>
@@ -146,7 +149,7 @@
     <div class="pool mid">
       <h3>🧧 Lucky Rollers</h3>
       <p>Hold <strong>500K+ Tokens</strong> to qualify.</p>
-      <div class="pool-prize">💰 Prize: <strong>0.15-0.4 BNB</strong></div>
+      <div class="pool-prize">💰 Prize: <strong>0.55-1 Sol</strong></div>
       <div class="timer">Next Draw: <span id="mid-timer">00:50:00</span></div>
       <p class="note">Mid-tier jackpot — solid odds, higher prizes.</p>
     </div>
@@ -154,7 +157,7 @@
     <div class="pool mega">
       <h3>👑 High Emperors</h3>
       <p>Hold <strong>1M+ Tokens</strong> to enter elite draws.</p>
-      <div class="pool-prize">💰 Prize: <strong>0.5 – 1 BNB</strong></div>
+      <div class="pool-prize">💰 Prize: <strong>1.2 – 5 Sol</strong></div>
       <div class="timer">Next Draw: <span id="mega-timer2">02:00:00</span></div>
       <p class="note">Exclusive high-tier rewards for top holders.</p>
     </div>
@@ -201,6 +204,31 @@
 
 </section>
 
+<!-- === Dev Burn Tracker === -->
+<section class="dev-burn-section">
+  <h3>🔥 Developer Token Burns</h3>
+  <p>Every <strong>250k market cap</strong>, a <strong>10% SPL token burn</strong> is performed.</p>
+
+  <div class="burn-stats">
+    <p><strong>Total Burns:</strong> <span id="burn-count">0</span></p>
+  </div>
+
+  <table id="burn-history">
+    <thead>
+      <tr>
+        <th>🔥 Burn #</th>
+        <th>Amount Burned</th>
+        <th>Date</th>
+        <th>TxID</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- JS will populate rows here -->
+    </tbody>
+  </table>
+</section>
+
+
 <div class="view-all-container">
   <a href="vrf-winners.html" class="view-all-btn">🔍 View All Verified Winners</a>
 </div>
@@ -215,14 +243,16 @@
 
 
   <footer>
-  <p>© 2025 Dynasty Jackpot — Built on BNB Chain</p>
+  <p>© 2025 CHINESE POWERBALL — Built on SOL Chain</p>
   <div class="disclaimer">
     <p><strong>免责声明 DISCLAIMER</strong></p>
     <p>这不是彩票或国家附属游戏。仅供娱乐。请查看您当地的法律。</p>
-    <p>Not a lottery or state-affiliated game. Entertainment only. Please check your local laws.</p>
-    <p>⚠️ 加密货币涉及风险 | Cryptocurrency involves risk</p>
+    <p>Not a lottery or state-affiliated game. Entertainment only.</p>
+    <p>加密货币涉及风险 |</p>
   </div>
 </footer>
+
+
 
 
 

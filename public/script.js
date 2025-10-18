@@ -30,7 +30,7 @@ async function revealWinner(poolName) {
       let explorerBase = '';
       if (winner.wallet?.startsWith('0x')) {
         // BNB or other EVM chain
-        explorerBase = 'https://bscscan.com/tx/';
+        explorerBase = 'https://solscan.io/tx/';
       } else {
         // Solana-style address
         explorerBase = 'https://solscan.io/tx/';
@@ -207,6 +207,15 @@ async function handleWinnerUpload(tier, wallet, amount, txid = "", vrf = "") {
     const data = await response.json();
     if (response.ok) {
       console.log(`✅ ${tier} winner saved to server`, data);
+
+ // Safely handle structure — use data.updated or fallback
+  const updatedData = data.updated || data || {
+    wallet,
+    amount,
+    txid,
+    vrf
+  };
+
       updateWinnerBox(tier, data.updated);
     } else {
       console.warn(`⚠️ Failed to save ${tier} winner:`, data.error);
@@ -217,11 +226,11 @@ async function handleWinnerUpload(tier, wallet, amount, txid = "", vrf = "") {
 }
 
 document.getElementById("follow-x").addEventListener("click", () => {
-  window.open("https://x.com/DynastyJackpot", "_blank"); // replace with your real X URL
+  window.open("https://x.com/CHINESEPOWERBAL", "_blank"); // replace with your real X URL
 });
 
 document.getElementById("compatible").addEventListener("click", () => {
-  alert("✅ Dynasty Jackpot is fully compatible with all devices — mobile, tablet, and desktop!");
+  alert("✅ CHINESE POWERBALL is fully compatible with all devices — mobile, tablet, and desktop!");
 });
 
 
@@ -446,7 +455,7 @@ function updateWinnerBox(tier, data) {
     if (data.txid && data.txid !== "—") {
       const txLink = data.txid.startsWith("http")
         ? data.txid
-        : `https://bscscan.com/tx/${data.txid}`;
+        : `https://solscan.io/tx/${data.txid}`;
       txEl.innerHTML = `<a href="${txLink}" target="_blank" rel="noopener noreferrer">View TX</a>`;
     } else {
       txEl.textContent = "—";
@@ -528,7 +537,7 @@ if (list) {
       <span class="pool-label">${poolName}</span> — 
       Wallet: <span class="wallet">${w.wallet}</span> — 
       Amount: <span class="amount">${w.amount}</span> — 
-      <a href="${w.txid.startsWith('http') ? w.txid : 'https://bscscan.com/tx/' + w.txid}" target="_blank" class="tx-link">TX</a>
+      <a href="${w.txid.startsWith('http') ? w.txid : 'https://solscan.io/tx/' + w.txid}" target="_blank" class="tx-link">TX</a>
       ${w.vrf ? `<a href="${w.vrf}" target="_blank">VRF</a>` : "—"} — 
       <em>${date}</em>
     `;
@@ -567,7 +576,7 @@ winners.forEach((w) => {
     <td>${w.wallet}</td>
     <td>${w.amount}</td>
     <td><a href="${w.vrf || '#'}" target="_blank" class="vrf-link">View VRF</a></td>
-    <td><a href="${w.txid.startsWith('http') ? w.txid : 'https://bscscan.com/tx/' + w.txid}" target="_blank" class="tx-link">Txn Hash</a></td>
+    <td><a href="${w.txid.startsWith('http') ? w.txid : 'https://solscan.io/tx/' + w.txid}" target="_blank" class="tx-link">Txn Hash</a></td>
     <td>${date}</td>
   `;
 
@@ -628,7 +637,7 @@ await loadContractAddress(); // 🔄 refresh the displayed contract instantly
 });
 
 
-// === Display Global Contract Address in Header ===
+// === Display Global Solana Token Address in Header ===
 async function loadContractAddress() {
   try {
     const res = await fetch("/api/contract");
@@ -637,9 +646,15 @@ async function loadContractAddress() {
 
     if (!el) return;
 
-    if (data?.address && data.address.startsWith("0x")) {
+    // ✅ Check for a valid Solana address (Base58)
+    const isSolanaAddress =
+      data?.address &&
+      typeof data.address === "string" &&
+      /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(data.address);
+
+    if (isSolanaAddress) {
       el.innerHTML = `
-        Contract Address: 
+        Token Address: 
         <span id="ca-text" style="cursor:pointer; color:#FFD700; text-decoration:underline;">
           ${data.address}
         </span>
@@ -652,16 +667,75 @@ async function loadContractAddress() {
         setTimeout(() => loadContractAddress(), 2000);
       });
     } else {
-      el.textContent = "Contract Address: Not Set";
+      el.textContent = "Token Address: Not Set";
     }
   } catch (err) {
-    console.warn("⚠️ Could not load contract address:", err);
+    console.warn("⚠️ Could not load Solana token address:", err);
     const el = document.getElementById("contract-address");
-    if (el) el.textContent = "Contract Address: Error loading";
+    if (el) el.textContent = "Token Address: Error loading";
   }
 }
 
 document.addEventListener("DOMContentLoaded", loadContractAddress);
+
+// === DEV BURN BUTTON HANDLER ===
+document.getElementById("dev-db")?.addEventListener("click", async () => {
+  const key = prompt("Enter dev key to confirm burn:");
+  const percent = prompt("Enter burn percent (e.g. 10%):");
+  const txid = prompt("Enter transaction ID:");
+
+  if (!percent || !txid) return alert("⚠️ Missing burn details!");
+
+  const res = await fetch("/api/dev-burn", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ key, percent, txid })
+  });
+
+  const data = await res.json();
+  if (data.success) {
+    alert("🔥 Burn recorded successfully!");
+    loadBurns(); // reload table
+  } else {
+    alert("❌ Burn failed: " + (data.error || "Unknown error"));
+  }
+});
+
+// === LOAD & DISPLAY DEV BURNS ===
+async function loadBurns() {
+  try {
+    const res = await fetch("/burns.json?_=" + Date.now());
+    const burns = await res.json();
+
+    const countEl = document.getElementById("burn-count");
+    const tableBody = document.querySelector("#burn-history tbody");
+
+    if (!Array.isArray(burns)) return;
+
+    // Update count
+    countEl.textContent = burns.length;
+
+    // Clear and refill table
+    tableBody.innerHTML = "";
+    burns.forEach((burn, i) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${i + 1}</td>
+        <td>${burn.percent}</td>
+        <td>${burn.date}</td>
+        <td><a href="https://solscan.io/tx/${burn.txid}" target="_blank">${burn.txid.slice(0, 10)}...</a></td>
+      `;
+      tableBody.appendChild(tr);
+    });
+  } catch (err) {
+    console.warn("⚠️ Could not load burns:", err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadBurns);
+
+
+
 
 
 // === PREVIOUS WINNERS PAGE SUPPORT ===
@@ -701,7 +775,7 @@ async function loadPreviousWinners() {
             ? `<a href="${
                 w.txid.startsWith("http")
                   ? w.txid
-                  : "https://bscscan.com/tx/" + w.txid
+                  : "https://solscan.io/tx/" + w.txid
               }" target="_blank">TX</a>`
             : "—"
         } |
@@ -737,37 +811,53 @@ document.getElementById("dev-w1")?.addEventListener("click", () => updateWinner(
 document.getElementById("dev-w2")?.addEventListener("click", () => updateWinner("Lucky Rollers"));
 document.getElementById("dev-w3")?.addEventListener("click", () => updateWinner("High Emperors"));
 
+// === SOLANA POOL TRACKER ===
+const WALLET_ADDRESS = "9b5dJYQ6GEhoQ8F3v2zWH2FhMpCMu5acA7B4NLmnMdNd";
 
-// === BNB POOL TRACKER (updated for Etherscan API v2) ===
-const WALLET_ADDRESS = "0x0ead634b5E9cfd80a22495dACc006Eb4F75605fD";
-const ETHERSCAN_API_KEY = "NES6DXJJ6FPDYHA15R97B7V7KVZJKZWXGX"; // Works for BSC too
-const bnbPoolDisplay = document.getElementById("bnbPool");
+// ✅ Your CORS-enabled Helius RPC endpoint
+const RPC_URL = "https://mainnet.helius-rpc.com/?api-key=88759e14-2c77-4ea4-8241-e1f479ac9218";
 
-async function fetchBNBBalance() {
+const solPoolDisplay = document.getElementById("bnbPool"); // keep same element ID for compatibility
+
+async function fetchSolBalance() {
   try {
-    const res = await fetch(
-      `https://api.etherscan.io/v2/api?chainid=56&module=account&action=balance&address=${WALLET_ADDRESS}&apikey=${ETHERSCAN_API_KEY}`
+    const res = await fetch(RPC_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        id: 1,
+        method: "getBalance",
+        params: [WALLET_ADDRESS],
+      }),
+    });
 
-    );
+    if (!res.ok) {
+      throw new Error(`RPC responded with status ${res.status}`);
+    }
+
     const data = await res.json();
 
-    if (data.status === "1" || data.message === "OK") {
-      const balanceWei = BigInt(data.result);
-      const balanceBNB = Number(balanceWei) / 1e18;
-      const jackpotBNB = balanceBNB * 0.9;
-      bnbPoolDisplay.textContent = jackpotBNB.toFixed(4);
+    if (data?.result?.value !== undefined) {
+      const balanceLamports = data.result.value;
+      const balanceSOL = balanceLamports / 1e9; // 1 SOL = 1e9 lamports
+      const jackpotSOL = balanceSOL * 0.9; // show 90% portion as jackpot
+      solPoolDisplay.textContent = jackpotSOL.toFixed(4);
     } else {
-      bnbPoolDisplay.textContent = "Error fetching";
-      console.warn("Etherscan v2 Error:", data);
+      solPoolDisplay.textContent = "Error fetching";
+      console.warn("Unexpected response:", data);
     }
   } catch (err) {
-    console.error("BNB Fetch Error:", err);
-    if (bnbPoolDisplay) bnbPoolDisplay.textContent = "Unavailable";
+    console.error("❌ SOL Fetch Error:", err);
+    if (solPoolDisplay) solPoolDisplay.textContent = "Unavailable";
   }
 }
 
-fetchBNBBalance();
-setInterval(fetchBNBBalance, 20000);
+// Run initially + refresh every 20 seconds
+fetchSolBalance();
+setInterval(fetchSolBalance, 20000);
+
+
 
 // === AUTO REFRESH WINNERS EVERY 10 SECONDS ===
 setInterval(() => {

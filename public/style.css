@@ -489,6 +489,35 @@ body::before {
   }
 }
 
+.dev-burn-section {
+  background: rgba(30, 0, 0, 0.7);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 30px auto;
+  color: #ffd700;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+#burn-history {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+}
+
+#burn-history th, #burn-history td {
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  padding: 6px 8px;
+  text-align: center;
+}
+
+#burn-history th {
+  background: rgba(255, 215, 0, 0.1);
+  color: #fff;
+}
+
+
 /* === Mobile Optimization === */
 @media (max-width: 768px) {
   .pool-row,

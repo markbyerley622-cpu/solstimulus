@@ -174,6 +174,48 @@ app.post("/api/update-winner", (req, res) => {
   }
 });
 
+// === DEV BURN ENDPOINT (real-time broadcast) ===
+app.post("/api/dev-burn", (req, res) => {
+  const { key, percent, txid } = req.body;
+
+  // 🔐 Security check
+  if (key !== process.env.DEV_KEY) {
+    return res.json({ success: false, error: "Unauthorized dev key" });
+  }
+
+  if (!percent || !txid) {
+    return res.json({ success: false, error: "Missing burn data" });
+  }
+
+  const burnsFile = path.join(__dirname, "public", "burns.json");
+
+  // Load existing burns
+  let burns = [];
+  if (fs.existsSync(burnsFile)) {
+    try {
+      burns = JSON.parse(fs.readFileSync(burnsFile, "utf8"));
+    } catch {
+      burns = [];
+    }
+  }
+
+  // Append new burn
+  const newBurn = {
+    percent,
+    txid,
+    date: new Date().toLocaleString("en-US", { timeZone: "UTC" })
+  };
+
+  burns.push(newBurn);
+
+  // Save back to file
+  fs.writeFileSync(burnsFile, JSON.stringify(burns, null, 2));
+
+  console.log(`🔥 Dev Burn Recorded: ${percent} at ${newBurn.date}`);
+  res.json({ success: true });
+});
+
+
 
 // === POST: sync winner (called by syncWinners in script.js) ===
 // === POST: sync winner safely ===
@@ -250,29 +292,29 @@ app.get("/api/contract", (req, res) => {
   }
 });
 
-// Update contract address (requires dev key)
+// === Update Contract / Program Address (any format allowed) ===
 app.post("/api/update-contract", (req, res) => {
   const { address, key } = req.body;
-  
+
   // Security check
   if (key !== process.env.DEV_KEY) {
     return res.status(403).json({ success: false, error: "Invalid dev key" });
   }
 
-  // Validate address
-  if (!address || !address.startsWith("0x") || address.length !== 42) {
-    return res.status(400).json({ success: false, error: "Invalid contract address format" });
+  // ✅ Accept any non-empty string
+  if (!address || typeof address !== "string" || address.trim() === "") {
+    return res.status(400).json({ success: false, error: "Address cannot be empty" });
   }
 
-  // Save new address
-  fs.writeFileSync(CONTRACT_FILE, JSON.stringify({ address }, null, 2));
-  console.log(`🪙 Updated global contract address: ${address}`);
+  // Save the new address
+  fs.writeFileSync(CONTRACT_FILE, JSON.stringify({ address: address.trim() }, null, 2));
+  console.log(`🪙 Updated global address: ${address}`);
 
-  // 🔥 Broadcast live update to all connected clients
+  // 🔥 Broadcast to all connected clients
   io.emit("contractUpdated");
 
   // Respond success
-  res.json({ success: true });
+  res.json({ success: true, address: address.trim() });
 });
 
 // === Serve all .html pages properly ===
@@ -284,6 +326,7 @@ app.get("/:page", (req, res, next) => {
   }
   next();
 });
+
 
 
 
