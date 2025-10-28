@@ -328,6 +328,77 @@ app.get("/:page", (req, res, next) => {
 });
 
 
+// === LIVE LOBBY WEBSOCKET FUNCTIONALITY ===
+let onlineUsers = new Set();
+let chatHistory = [];
+const MAX_CHAT_HISTORY = 100; // Keep last 100 messages
+const CHAT_CLEANUP_INTERVAL = 30 * 60 * 1000; // 30 minutes in milliseconds
+
+// Clear chat history every 30 minutes
+setInterval(() => {
+  if (chatHistory.length > 0) {
+    console.log('🧹 Clearing chat history (30-minute cleanup)');
+    chatHistory = [];
+    io.emit('systemMessage', '🧹 Chat history has been cleared');
+  }
+}, CHAT_CLEANUP_INTERVAL);
+
+io.on('connection', (socket) => {
+  console.log('👤 New user connected:', socket.id);
+
+  // Handle user joining lobby
+  socket.on('joinLobby', (data) => {
+    const username = data.username || 'Anonymous';
+    socket.username = username;
+    onlineUsers.add(socket.id);
+
+    console.log(`🏮 ${username} joined the lobby`);
+
+    // Send chat history to new user
+    socket.emit('chatHistory', chatHistory);
+
+    // Broadcast system message
+    io.emit('systemMessage', `🎉 ${username} joined the lobby`);
+
+    // Update online count for all users
+    io.emit('onlineCount', onlineUsers.size);
+  });
+
+  // Handle chat messages
+  socket.on('sendMessage', (data) => {
+    if (!socket.username) return;
+
+    const message = {
+      username: socket.username,
+      message: data.message,
+      timestamp: Date.now()
+    };
+
+    // Add to history
+    chatHistory.push(message);
+
+    // Trim history if too long
+    if (chatHistory.length > MAX_CHAT_HISTORY) {
+      chatHistory = chatHistory.slice(-MAX_CHAT_HISTORY);
+    }
+
+    // Broadcast to all users
+    io.emit('chatMessage', message);
+
+    console.log(`💬 ${socket.username}: ${data.message}`);
+  });
+
+  // Handle disconnection
+  socket.on('disconnect', () => {
+    if (socket.username) {
+      console.log(`👋 ${socket.username} left the lobby`);
+      io.emit('systemMessage', `👋 ${socket.username} left the lobby`);
+    }
+
+    onlineUsers.delete(socket.id);
+    io.emit('onlineCount', onlineUsers.size);
+  });
+});
 
 
 // === FALLBACK: 404 handler ===

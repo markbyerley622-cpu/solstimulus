@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🏮 CHINESE POWERBALL | Live Lobby</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500&display=swap" rel="stylesheet">
+  <style>
+    /* === Live Lobby Specific Styles === */
+    .lobby-container {
+      max-width: min(1200px, 95vw);
+      margin: clamp(1.5rem, 4vw, 2.5rem) auto;
+      padding: clamp(1rem, 2.5vw, 1.5rem);
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: clamp(1rem, 2.5vw, 1.5rem);
+    }
+
+    @media (max-width: 900px) {
+      .lobby-container {
+        grid-template-columns: 1fr;
+        padding: 1rem 0.5rem;
+      }
+    }
+
+    .main-content {
+      background: rgba(43, 0, 0, 0.85);
+      border: 2px solid #FFD700;
+      border-radius: 15px;
+      padding: clamp(1.25rem, 3vw, 2rem);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+    }
+
+    .main-content h2 {
+      color: #FFD700;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+      margin-bottom: clamp(1rem, 2.5vw, 1.5rem);
+      text-align: center;
+      font-size: clamp(1.3rem, 3vw, 1.6rem);
+      line-height: 1.3;
+    }
+
+    .online-users {
+      background: rgba(60, 0, 0, 0.6);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      text-align: center;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+    }
+
+    .online-users h3 {
+      color: #FFD700;
+      margin: 0 0 10px 0;
+      font-size: 1.2rem;
+    }
+
+    .user-count {
+      font-size: 2rem;
+      color: #FFD700;
+      font-weight: bold;
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+    }
+
+    .lobby-info {
+      background: rgba(60, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      color: #F7F4EA;
+      line-height: 1.8;
+    }
+
+    .lobby-info h3 {
+      color: #FFD700;
+      margin-bottom: 15px;
+      text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+    }
+
+    .lobby-info ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .lobby-info li {
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .lobby-info li:last-child {
+      border-bottom: none;
+    }
+
+    /* === Chat Box Styles === */
+    .chat-box {
+      background: rgba(43, 0, 0, 0.85);
+      border: 2px solid #FFD700;
+      border-radius: 15px;
+      padding: clamp(1rem, 2.5vw, 1.5rem);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+      display: flex;
+      flex-direction: column;
+      height: clamp(400px, 60vh, 600px);
+      max-height: 80vh;
+    }
+
+    .chat-header {
+      color: #FFD700;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+      margin-bottom: clamp(0.75rem, 2vw, 1rem);
+      text-align: center;
+      font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+      border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+      padding-bottom: clamp(0.5rem, 1.5vw, 0.75rem);
+      line-height: 1.3;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background: rgba(20, 0, 0, 0.5);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 10px;
+      padding: clamp(0.75rem, 2vw, 1rem);
+      margin-bottom: clamp(0.75rem, 2vw, 1rem);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.5rem, 1.5vw, 0.75rem);
+    }
+
+    .chat-messages::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .chat-messages::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: #FFD700;
+      border-radius: 10px;
+    }
+
+    .chat-message {
+      background: rgba(60, 0, 0, 0.7);
+      padding: clamp(0.625rem, 1.5vw, 0.75rem) clamp(0.75rem, 2vw, 1rem);
+      border-radius: 8px;
+      border-left: 3px solid #FFD700;
+      animation: slideIn 0.3s ease;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .chat-message .username {
+      color: #FFD700;
+      font-weight: bold;
+      margin-right: 0.5rem;
+      font-size: clamp(0.875rem, 2vw, 0.95rem);
+    }
+
+    .chat-message .timestamp {
+      color: #999;
+      font-size: clamp(0.7rem, 1.5vw, 0.75rem);
+      margin-left: 0.5rem;
+    }
+
+    .chat-message .text {
+      color: #F7F4EA;
+      margin-top: 0.375rem;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      font-size: clamp(0.875rem, 2vw, 0.95rem);
+      line-height: 1.5;
+    }
+
+    .chat-message.system {
+      background: rgba(0, 40, 80, 0.5);
+      border-left-color: #4A90E2;
+      text-align: center;
+      font-style: italic;
+    }
+
+    .chat-message.system .text {
+      color: #4A90E2;
+    }
+
+    .chat-input-area {
+      display: flex;
+      gap: clamp(0.5rem, 1.5vw, 0.75rem);
+      flex-wrap: wrap;
+    }
+
+    .chat-input {
+      flex: 1;
+      min-width: min(200px, 100%);
+      background: rgba(20, 0, 0, 0.8);
+      border: 1px solid #FFD700;
+      border-radius: 8px;
+      padding: clamp(0.75rem, 2vw, 1rem);
+      color: #F7F4EA;
+      font-family: 'Noto Serif SC', serif;
+      font-size: clamp(0.875rem, 2vw, 0.95rem);
+    }
+
+    .chat-input:focus {
+      outline: none;
+      border-color: #FFF3B0;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+
+    .chat-send-btn {
+      background: linear-gradient(90deg, #FFD700, #FFA500);
+      border: none;
+      border-radius: 8px;
+      padding: clamp(0.75rem, 2vw, 1rem) clamp(1.25rem, 3vw, 1.5rem);
+      color: #2b0000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Noto Serif SC', serif;
+      font-size: clamp(0.875rem, 2vw, 0.95rem);
+      white-space: nowrap;
+    }
+
+    .chat-send-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    }
+
+    .chat-send-btn:active {
+      transform: scale(0.98);
+    }
+
+    .connection-status {
+      text-align: center;
+      padding: 8px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    .connection-status.connected {
+      background: rgba(0, 100, 0, 0.3);
+      color: #90EE90;
+      border: 1px solid #90EE90;
+    }
+
+    .connection-status.disconnected {
+      background: rgba(100, 0, 0, 0.3);
+      color: #FF6B6B;
+      border: 1px solid #FF6B6B;
+    }
+
+    .username-prompt {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .username-modal {
+      background: rgba(43, 0, 0, 0.95);
+      border: 3px solid #FFD700;
+      border-radius: 15px;
+      padding: clamp(1.5rem, 5vw, 2.5rem);
+      max-width: min(400px, 90vw);
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+    }
+
+    .username-modal h2 {
+      color: #FFD700;
+      margin-bottom: clamp(1rem, 3vw, 1.5rem);
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+      font-size: clamp(1.3rem, 3vw, 1.6rem);
+      line-height: 1.3;
+    }
+
+    .username-modal input {
+      width: 100%;
+      padding: clamp(0.75rem, 2vw, 1rem);
+      margin-bottom: clamp(1rem, 3vw, 1.5rem);
+      background: rgba(20, 0, 0, 0.8);
+      border: 1px solid #FFD700;
+      border-radius: 8px;
+      color: #F7F4EA;
+      font-family: 'Noto Serif SC', serif;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      box-sizing: border-box;
+    }
+
+    .username-modal button {
+      background: linear-gradient(90deg, #FFD700, #FFA500);
+      border: none;
+      border-radius: 8px;
+      padding: clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2rem);
+      color: #2b0000;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: 'Noto Serif SC', serif;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      transition: all 0.3s ease;
+    }
+
+    .username-modal button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    }
+  </style>
+</head>
+<body>
+
+<header class="top-header">
+  <div class="logo">
+    🏯 <span>CHINESE POWERBALL</span>
+  </div>
+
+  <div id="contract-address" class="contract-address">
+    Loading contract address...
+  </div>
+
+  <button id="menu-toggle" class="menu-toggle" aria-label="Toggle Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-link">🏠 Home</a>
+    <a href="faq.html" class="nav-link">❓ FAQ</a>
+    <a href="vrf-winners.html" class="nav-link">🏆 VRF Winners</a>
+    <a
+      href="https://solscan.io/account/VRFzZoJdhFWL8rkvu87LpKM3RbcVezpMEc6X5GVDr7y#cards"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="nav-link highlight"
+    >
+      🔗 VRF Smart Contract
+    </a>
+  </nav>
+</header>
+
+<!-- Username Prompt Modal -->
+<div id="username-prompt" class="username-prompt">
+  <div class="username-modal">
+    <h2>🏮 Welcome to the Lobby</h2>
+    <p style="color: #F7F4EA; margin-bottom: 20px;">Please enter your username to join the chat</p>
+    <input type="text" id="username-input" placeholder="Enter username..." maxlength="20" />
+    <button id="username-submit">Join Lobby</button>
+  </div>
+</div>
+
+<div class="lobby-container">
+  <!-- Main Content Area -->
+  <div class="main-content">
+    <h2>🏮 Live Lobby</h2>
+
+    <div class="online-users">
+      <h3>👥 Players Online</h3>
+      <div class="user-count" id="online-count">0</div>
+    </div>
+
+    <div class="lobby-info">
+      <h3>💫 About the Lobby</h3>
+      <p>Welcome to the CHINESE POWERBALL live lobby! Connect with other players, discuss strategies, and celebrate wins together.</p>
+
+      <h3 style="margin-top: 20px;">🎯 Current Pools</h3>
+      <ul>
+        <li>🐉 <strong>Mini Makis</strong> — Draw every 15 minutes</li>
+        <li>🧧 <strong>Lucky Rollers</strong> — Draw every 25 minutes</li>
+        <li>👑 <strong>High Emperors</strong> — Draw every 45 minutes</li>
+        <li>💎 <strong>Mega Jackpot</strong> — Daily grand draw</li>
+      </ul>
+
+      <div style="margin-top: 20px; padding: 15px; background: rgba(80, 0, 0, 0.5); border-radius: 8px; border: 1px solid rgba(255, 215, 0, 0.3);">
+        <p style="color: #FFD700; font-weight: bold;">⏰ Chat History</p>
+        <p style="font-size: 0.9rem; margin-top: 8px;">Messages are automatically cleared every 30 minutes to keep the lobby fresh.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat Box -->
+  <div class="chat-box">
+    <h3 class="chat-header">💬 Live Chat</h3>
+
+    <div id="connection-status" class="connection-status disconnected">
+      ⚠️ Connecting...
+    </div>
+
+    <div class="chat-messages" id="chat-messages">
+      <!-- Messages will be added here -->
+    </div>
+
+    <div class="chat-input-area">
+      <input
+        type="text"
+        id="chat-input"
+        class="chat-input"
+        placeholder="Type your message..."
+        maxlength="200"
+        disabled
+      />
+      <button id="chat-send" class="chat-send-btn" disabled>Send</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 CHINESE POWERBALL — Built on SOL Chain</p>
+  <div class="disclaimer">
+    <p><strong>免责声明 DISCLAIMER</strong></p>
+    <p>这不是彩票或国家附属游戏。仅供娱乐。请查看您当地的法律。</p>
+    <p>Not a lottery or state-affiliated game. Entertainment only.</p>
+    <p>加密货币涉及风险 |</p>
+  </div>
+</footer>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  let socket;
+  let username = localStorage.getItem('lobby_username');
+
+  // DOM Elements
+  const usernamePrompt = document.getElementById('username-prompt');
+  const usernameInput = document.getElementById('username-input');
+  const usernameSubmit = document.getElementById('username-submit');
+  const chatMessages = document.getElementById('chat-messages');
+  const chatInput = document.getElementById('chat-input');
+  const chatSend = document.getElementById('chat-send');
+  const onlineCount = document.getElementById('online-count');
+  const connectionStatus = document.getElementById('connection-status');
+  const contractAddress = document.getElementById('contract-address');
+
+  // Load contract address
+  fetch('/api/contract')
+    .then(res => res.json())
+    .then(data => {
+      contractAddress.textContent = data.address || 'No contract address set';
+    })
+    .catch(() => {
+      contractAddress.textContent = 'Failed to load contract';
+    });
+
+  // Show username prompt if not set
+  if (!username) {
+    usernamePrompt.style.display = 'flex';
+  } else {
+    usernamePrompt.style.display = 'none';
+    initializeChat();
+  }
+
+  // Handle username submission
+  usernameSubmit.addEventListener('click', () => {
+    const inputUsername = usernameInput.value.trim();
+    if (inputUsername.length >= 3) {
+      username = inputUsername;
+      localStorage.setItem('lobby_username', username);
+      usernamePrompt.style.display = 'none';
+      initializeChat();
+    } else {
+      alert('Username must be at least 3 characters long');
+    }
+  });
+
+  usernameInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      usernameSubmit.click();
+    }
+  });
+
+  function initializeChat() {
+    // Initialize Socket.IO
+    socket = io();
+
+    socket.on('connect', () => {
+      console.log('Connected to server');
+      connectionStatus.textContent = '✅ Connected';
+      connectionStatus.className = 'connection-status connected';
+      chatInput.disabled = false;
+      chatSend.disabled = false;
+
+      // Join lobby with username
+      socket.emit('joinLobby', { username });
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from server');
+      connectionStatus.textContent = '⚠️ Disconnected';
+      connectionStatus.className = 'connection-status disconnected';
+      chatInput.disabled = true;
+      chatSend.disabled = true;
+    });
+
+    // Update online user count
+    socket.on('onlineCount', (count) => {
+      onlineCount.textContent = count;
+    });
+
+    // Receive chat message
+    socket.on('chatMessage', (data) => {
+      addMessage(data);
+    });
+
+    // System message
+    socket.on('systemMessage', (message) => {
+      addSystemMessage(message);
+    });
+
+    // Load chat history
+    socket.on('chatHistory', (messages) => {
+      chatMessages.innerHTML = '';
+      messages.forEach(msg => addMessage(msg));
+    });
+
+    // Handle contract updates
+    socket.on('contractUpdated', () => {
+      fetch('/api/contract')
+        .then(res => res.json())
+        .then(data => {
+          contractAddress.textContent = data.address || 'No contract address set';
+        });
+    });
+
+    // Send message
+    chatSend.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  }
+
+  function sendMessage() {
+    const message = chatInput.value.trim();
+    if (message && socket) {
+      socket.emit('sendMessage', { message });
+      chatInput.value = '';
+    }
+  }
+
+  function addMessage(data) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'chat-message';
+
+    const timestamp = new Date(data.timestamp).toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
+    messageDiv.innerHTML = `
+      <span class="username">${escapeHtml(data.username)}:</span>
+      <span class="timestamp">${timestamp}</span>
+      <div class="text">${escapeHtml(data.message)}</div>
+    `;
+
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function addSystemMessage(message) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'chat-message system';
+    messageDiv.innerHTML = `<div class="text">${escapeHtml(message)}</div>`;
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // Mobile menu toggle
+  const menuToggle = document.getElementById('menu-toggle');
+  const nav = document.querySelector('.nav');
+
+  menuToggle.addEventListener('click', () => {
+    nav.classList.toggle('active');
+    menuToggle.classList.toggle('open');
+  });
+</script>
+
+</body>
+</html>

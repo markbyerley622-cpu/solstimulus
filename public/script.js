@@ -226,7 +226,7 @@ async function handleWinnerUpload(tier, wallet, amount, txid = "", vrf = "") {
 }
 
 document.getElementById("follow-x").addEventListener("click", () => {
-  window.open("https://x.com/CHINESEPOWERBAL", "_blank"); // replace with your real X URL
+  window.open("https://x.com/chinesepwrball", "_blank"); // replace with your real X URL
 });
 
 document.getElementById("compatible").addEventListener("click", () => {
@@ -863,3 +863,237 @@ setInterval(fetchSolBalance, 20000);
 setInterval(() => {
   loadWinners();
 }, 10000);
+
+
+// === 🎵 CHINESE BACKGROUND MUSIC & GONG SOUNDS (Generated with Web Audio API) ===
+
+// Create Audio Context
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+let chineseMusicPlaying = false;
+let chineseMusicInterval = null;
+
+// === 🔔 SYNTHESIZED CHINESE GONG SOUND ===
+function playGong() {
+  const now = audioContext.currentTime;
+
+  // Create oscillators for rich gong sound
+  const oscillator1 = audioContext.createOscillator();
+  const oscillator2 = audioContext.createOscillator();
+  const oscillator3 = audioContext.createOscillator();
+
+  // Create gain nodes for volume control
+  const gainNode = audioContext.createGain();
+  const masterGain = audioContext.createGain();
+
+  // Gong frequencies (low, metallic sound)
+  oscillator1.frequency.setValueAtTime(80, now);
+  oscillator2.frequency.setValueAtTime(120, now);
+  oscillator3.frequency.setValueAtTime(160, now);
+
+  oscillator1.type = 'sine';
+  oscillator2.type = 'triangle';
+  oscillator3.type = 'square';
+
+  // Connect audio nodes
+  oscillator1.connect(gainNode);
+  oscillator2.connect(gainNode);
+  oscillator3.connect(gainNode);
+  gainNode.connect(masterGain);
+  masterGain.connect(audioContext.destination);
+
+  // Volume envelope (attack, decay, sustain, release)
+  gainNode.gain.setValueAtTime(0, now);
+  gainNode.gain.linearRampToValueAtTime(0.8, now + 0.01); // Attack
+  gainNode.gain.exponentialRampToValueAtTime(0.3, now + 0.1); // Decay
+  gainNode.gain.exponentialRampToValueAtTime(0.01, now + 1.5); // Release
+
+  masterGain.gain.setValueAtTime(0.4, now); // Master volume
+
+  // Start and stop oscillators
+  oscillator1.start(now);
+  oscillator2.start(now);
+  oscillator3.start(now);
+
+  oscillator1.stop(now + 1.5);
+  oscillator2.stop(now + 1.5);
+  oscillator3.stop(now + 1.5);
+}
+
+// === 🎵 SYNTHESIZED CHINESE PENTATONIC MUSIC ===
+// Chinese pentatonic scale (C, D, E, G, A) - traditional sound
+const chineseScale = [
+  261.63, // C4
+  293.66, // D4
+  329.63, // E4
+  392.00, // G4
+  440.00, // A4
+  523.25, // C5
+  587.33, // D5
+  659.25, // E5
+  783.99, // G5
+  880.00, // A5
+];
+
+// Traditional Chinese melody pattern
+const melodyPattern = [
+  { note: 8, duration: 0.5 }, // G5
+  { note: 7, duration: 0.5 }, // E5
+  { note: 5, duration: 0.5 }, // C5
+  { note: 4, duration: 0.5 }, // A4
+  { note: 3, duration: 1.0 }, // G4
+  { note: 2, duration: 0.5 }, // E4
+  { note: 3, duration: 0.5 }, // G4
+  { note: 4, duration: 1.0 }, // A4
+  { note: 5, duration: 0.5 }, // C5
+  { note: 7, duration: 0.5 }, // E5
+  { note: 8, duration: 1.5 }, // G5
+  { note: 7, duration: 0.5 }, // E5
+  { note: 5, duration: 1.0 }, // C5
+];
+
+function playChineseNote(frequency, duration, startTime) {
+  const oscillator = audioContext.createOscillator();
+  const gainNode = audioContext.createGain();
+
+  oscillator.type = 'sine'; // Smooth, flute-like sound
+  oscillator.frequency.setValueAtTime(frequency, startTime);
+
+  // Gentle attack and release for traditional Chinese instrument sound
+  gainNode.gain.setValueAtTime(0, startTime);
+  gainNode.gain.linearRampToValueAtTime(0.15, startTime + 0.05); // Attack
+  gainNode.gain.linearRampToValueAtTime(0.12, startTime + duration - 0.1); // Sustain
+  gainNode.gain.linearRampToValueAtTime(0, startTime + duration); // Release
+
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+
+  oscillator.start(startTime);
+  oscillator.stop(startTime + duration);
+}
+
+function playChineseMelody() {
+  if (!chineseMusicPlaying) return;
+
+  let currentTime = audioContext.currentTime;
+
+  melodyPattern.forEach((note) => {
+    playChineseNote(chineseScale[note.note], note.duration, currentTime);
+    currentTime += note.duration;
+  });
+
+  // Schedule next melody loop
+  const totalDuration = melodyPattern.reduce((sum, note) => sum + note.duration, 0);
+  setTimeout(() => {
+    if (chineseMusicPlaying) {
+      playChineseMelody();
+    }
+  }, totalDuration * 1000);
+}
+
+// Function to start background music
+function startBackgroundMusic() {
+  if (!chineseMusicPlaying) {
+    chineseMusicPlaying = true;
+    // Resume audio context (required by some browsers)
+    if (audioContext.state === 'suspended') {
+      audioContext.resume();
+    }
+    playChineseMelody();
+    console.log('🎵 Chinese music started!');
+  }
+}
+
+// Function to stop background music
+function stopBackgroundMusic() {
+  chineseMusicPlaying = false;
+  console.log('🔇 Chinese music stopped.');
+}
+
+// Fallback: Start music on first user interaction
+let musicStarted = false;
+function tryStartMusic() {
+  if (!musicStarted) {
+    startBackgroundMusic();
+    musicStarted = true;
+  }
+}
+
+// Add click listeners to start music on ANY user interaction
+document.addEventListener('click', tryStartMusic, { once: true });
+document.addEventListener('touchstart', tryStartMusic, { once: true });
+
+// Try to start on page load
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(tryStartMusic, 1000);
+});
+
+// === 🔔 Add Gong Sound to ALL Interactive Elements ===
+
+// Add gong sound to all buttons
+document.querySelectorAll('button').forEach(btn => {
+  btn.addEventListener('click', playGong);
+});
+
+// Add gong sound to all pool boxes
+document.querySelectorAll('.pool').forEach(pool => {
+  pool.addEventListener('click', playGong);
+});
+
+// Add gong sound to all winner boxes
+document.querySelectorAll('.winner-box').forEach(box => {
+  box.addEventListener('click', playGong);
+});
+
+// Add gong sound to all navigation links
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', playGong);
+});
+
+// Add gong sound to main buttons (Follow X, Compatible, x402 banner)
+document.querySelectorAll('.main-btn').forEach(btn => {
+  btn.addEventListener('click', playGong);
+});
+
+// Add gong sound to x402 banner
+const x402Banner = document.querySelector('.x402-banner');
+if (x402Banner) {
+  x402Banner.style.cursor = 'pointer';
+  x402Banner.addEventListener('click', playGong);
+}
+
+// Add gong sound to jackpot boxes
+document.querySelectorAll('.jackpot-overview, .mega-jackpot-box, .tax-box, .distribution-box').forEach(box => {
+  box.style.cursor = 'pointer';
+  box.addEventListener('click', playGong);
+});
+
+// Add gong sound to logo
+const logo = document.querySelector('.logo');
+if (logo) {
+  logo.style.cursor = 'pointer';
+  logo.addEventListener('click', playGong);
+}
+
+console.log('🎵 Chinese music and gong sounds initialized!');
+
+// === 🎵 Music Toggle Button ===
+const musicToggle = document.getElementById('music-toggle');
+
+if (musicToggle) {
+  musicToggle.addEventListener('click', () => {
+    if (chineseMusicPlaying) {
+      stopBackgroundMusic();
+      musicToggle.textContent = '🔇';
+      musicToggle.classList.add('muted');
+      musicToggle.title = 'Play Music';
+    } else {
+      startBackgroundMusic();
+      musicToggle.textContent = '🎵';
+      musicToggle.classList.remove('muted');
+      musicToggle.title = 'Pause Music';
+    }
+
+    // Play gong sound when toggling music
+    playGong();
+  });
+}

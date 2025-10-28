@@ -1,4 +1,8 @@
 /* === Dynasty Jackpot: Imperial Edition === */
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -9,6 +13,9 @@ body {
   overflow-x: hidden;
   position: relative;
   z-index: 0; /* ensures proper stacking order */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: rgba(255, 215, 0, 0.2);
 }
 
 /* === Subtle Animated Dragon Background === */
@@ -63,11 +70,13 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 30px;
+  padding: 1rem clamp(1rem, 3vw, 2rem);
   position: sticky;
   top: 0;
   z-index: 100;
   box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 
@@ -92,16 +101,30 @@ body::before {
   line-height: 1.3;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .top-header {
     flex-direction: column;
-    gap: 8px;
+    gap: 0.75rem;
     text-align: center;
+    padding: 1rem;
   }
 
   .contract-address {
-    font-size: 0.8rem;
-    padding: 0 10px;
+    font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+    padding: 0.5rem;
+    order: 3;
+    width: 100%;
+  }
+
+  .logo {
+    order: 1;
+  }
+
+  .menu-toggle {
+    order: 2;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
   }
 }
 
@@ -109,14 +132,15 @@ body::before {
 
 
 .logo {
-  font-size: 1.6rem;
+  font-size: clamp(1.2rem, 4vw, 1.6rem);
   color: #FFD700;
   font-weight: 700;
   letter-spacing: 1px;
   text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
+  white-space: nowrap;
 }
 
 /* === Navigation Bar (Imperial Red & Golden Edition) === */
@@ -124,13 +148,14 @@ body::before {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 24px;
+  gap: clamp(1rem, 2vw, 1.5rem);
   background: linear-gradient(180deg, rgba(43, 0, 0, 0.95), rgba(20, 0, 0, 0.85));
-  padding: 14px 24px;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem);
   border-bottom: 2px solid #FFD700; /* Golden border */
   border-radius: 0 0 20px 20px;
   box-shadow: 0 0 20px rgba(255, 215, 0, 0.25);
   backdrop-filter: blur(6px);
+  flex-wrap: wrap;
 }
 
 /* === Links === */
@@ -138,9 +163,10 @@ body::before {
   color: #FFD700; /* Gold text */
   text-decoration: none;
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: clamp(0.9rem, 2vw, 1.05rem);
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 /* === Hover Effects === */
@@ -172,7 +198,7 @@ body::before {
 /* === HERO SECTION === */
 .hero {
   text-align: center;
-  padding: 70px 20px;
+  padding: clamp(2rem, 8vw, 4.5rem) clamp(1rem, 3vw, 2rem);
   color: #FFD700;
   font-family: 'Noto Serif SC', serif;
   position: relative;
@@ -180,17 +206,18 @@ body::before {
 }
 
 .hero h1 {
-  font-size: 2.4em;
+  font-size: clamp(1.5rem, 5vw, 2.4rem);
   color: #FFD700;
   text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-  margin-bottom: 10px;
+  margin-bottom: 0.75rem;
   letter-spacing: 1px;
+  line-height: 1.3;
 }
 
 .hero .subtitle {
   color: #F7F4EA;
-  font-size: 1.1em;
-  margin-bottom: 40px;
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
+  margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
   line-height: 1.7em;
   text-shadow: 0 0 6px rgba(255, 215, 0, 0.3);
 }
@@ -200,8 +227,8 @@ body::before {
   background: rgba(43, 0, 0, 0.8);
   border: 2px solid #FFD700;
   border-radius: 15px;
-  padding: 30px;
-  max-width: 650px;
+  padding: clamp(1.25rem, 4vw, 2rem);
+  max-width: min(650px, 95vw);
   margin: 0 auto;
   color: #F7F4EA;
   box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
@@ -221,19 +248,94 @@ body::before {
 }
 
 .jackpot-tiers li {
-  padding: 8px 0;
+  padding: 0.5rem 0;
   border-bottom: 1px solid rgba(255, 215, 0, 0.2);
   color: #F7F4EA;
-  font-size: 0.95em;
+  font-size: clamp(0.85rem, 2vw, 0.95rem);
+  line-height: 1.5;
 }
+
+/* === x402 Payments Banner (Imperial Red & Golden Edition) === */
+.x402-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(43, 0, 0, 0.85); /* Imperial red tone */
+  border: 2px solid #FFD700; /* Golden border */
+  border-radius: 12px;
+  padding: clamp(0.625rem, 1.5vw, 0.75rem) clamp(1rem, 2.5vw, 1.25rem);
+  font-size: clamp(0.875rem, 2vw, 0.95rem);
+  color: #FFD700; /* Golden text */
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 500;
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+  backdrop-filter: blur(6px);
+  transition: all 0.25s ease-in-out;
+  animation: fadeIn 0.8s ease;
+  max-width: fit-content;
+  margin: 0 auto clamp(1rem, 3vw, 1.5rem) auto;
+  white-space: nowrap;
+}
+
+.x402-banner:hover {
+  background: rgba(80, 0, 0, 0.9);
+  color: #FFF3B0;
+  box-shadow: 0 0 18px rgba(255, 215, 0, 0.5);
+  transform: scale(1.05);
+  animation: golden-glow 1.5s infinite alternate;
+}
+
+.x402-icon {
+  font-size: 1.4rem;
+}
+
+.x402-text {
+  color: inherit;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Responsive === */
+@media (max-width: 600px) {
+  .main-btn {
+    width: 100%;
+    font-size: 0.95rem;
+  }
+  .x402-banner {
+    flex-wrap: wrap;
+    text-align: center;
+    white-space: normal;
+    max-width: 90%;
+    padding: 0.75rem 1rem;
+  }
+  .x402-icon {
+    font-size: 1.2rem;
+  }
+  .x402-text {
+    font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+  }
+}
+
+
 
 /* === TAX & DISTRIBUTION BOXES === */
 .tax-box, .distribution-box {
   background: rgba(43, 0, 0, 0.75);
   border: 1px solid rgba(255, 215, 0, 0.3);
   border-radius: 12px;
-  padding: 20px;
-  margin-top: 25px;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  margin-top: clamp(1rem, 3vw, 1.5rem);
   text-align: left;
   box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
 }
@@ -294,15 +396,16 @@ body::before {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 50px;
-  margin-top: 60px;
+  gap: clamp(2rem, 5vw, 3rem);
+  margin-top: clamp(2rem, 6vw, 4rem);
+  padding: 0 1rem;
 }
 
 .pool-row,
 .winner-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: clamp(1.25rem, 3vw, 2rem);
   width: 100%;
   max-width: 1200px;
   justify-content: center;
@@ -313,7 +416,7 @@ body::before {
   background: rgba(43, 0, 0, 0.85);
   border: 2px solid #D4AF37;
   border-radius: 15px;
-  padding: 25px 20px;
+  padding: clamp(1.25rem, 3vw, 1.75rem) clamp(1rem, 2.5vw, 1.5rem);
   text-align: center;
   color: #F7F4EA;
   box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
@@ -327,15 +430,17 @@ body::before {
 
 .pool h3 {
   color: #FFD700;
-  font-size: 1.4rem;
-  margin-bottom: 10px;
+  font-size: clamp(1.2rem, 3vw, 1.4rem);
+  margin-bottom: 0.75rem;
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+  line-height: 1.3;
 }
 
 .pool p {
   color: #F7F4EA;
-  margin: 6px 0;
-  font-size: 0.95rem;
+  margin: 0.5rem 0;
+  font-size: clamp(0.875rem, 2vw, 0.95rem);
+  line-height: 1.5;
 }
 
 .pool .pool-prize {
@@ -355,27 +460,31 @@ body::before {
   background: rgba(43, 0, 0, 0.9);
   border: 2px solid #D4AF37;
   border-radius: 15px;
-  padding: 18px 20px;
+  padding: clamp(1rem, 2.5vw, 1.5rem) clamp(1rem, 2.5vw, 1.5rem);
   color: #F7F4EA;
   box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
   text-align: left;
-  max-width: 340px;
+  max-width: min(340px, 100%);
   margin: 0 auto;
+  width: 100%;
 }
 
 .winner-box h4 {
   color: #FFD700;
-  font-size: 1.1rem;
-  margin-bottom: 8px;
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
+  margin-bottom: 0.75rem;
   text-align: center;
   text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+  line-height: 1.3;
 }
 
 .winner-box p {
-  margin: 6px 0;
-  font-size: 0.92rem;
+  margin: 0.5rem 0;
+  font-size: clamp(0.85rem, 2vw, 0.92rem);
   color: #F7F4EA;
   word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.5;
 }
 
 .winner-box strong {
@@ -493,8 +602,9 @@ body::before {
   background: rgba(30, 0, 0, 0.7);
   border: 2px solid rgba(255, 215, 0, 0.3);
   border-radius: 12px;
-  padding: 20px;
-  margin: 30px auto;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  margin: clamp(1.5rem, 4vw, 2rem) auto;
+  max-width: min(1000px, 95vw);
   color: #ffd700;
   text-align: center;
   box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
@@ -502,14 +612,26 @@ body::before {
 
 #burn-history {
   width: 100%;
-  margin-top: 10px;
+  margin-top: 1rem;
   border-collapse: collapse;
+  font-size: clamp(0.8rem, 2vw, 0.95rem);
+  overflow-x: auto;
+  display: block;
+}
+
+#burn-history thead,
+#burn-history tbody,
+#burn-history tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
 }
 
 #burn-history th, #burn-history td {
   border: 1px solid rgba(255, 215, 0, 0.2);
-  padding: 6px 8px;
+  padding: clamp(0.5rem, 1.5vw, 0.75rem);
   text-align: center;
+  overflow-wrap: break-word;
 }
 
 #burn-history th {
@@ -523,11 +645,17 @@ body::before {
   .pool-row,
   .winner-row {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   .pool,
   .winner-box {
-    width: 90%;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .pool:hover {
+    transform: translateY(-2px);
   }
 }
 
@@ -697,62 +825,67 @@ footer .disclaimer p:last-child {
 /* === MEGA JACKPOT FEATURE SECTION (Imperial Grand Edition) === */
 .mega-highlight {
   text-align: center;
-  margin: 60px auto;
-  padding: 40px 25px;
+  margin: clamp(2rem, 6vw, 4rem) auto;
+  padding: clamp(1.5rem, 5vw, 2.5rem) clamp(1rem, 3vw, 2rem);
   background: linear-gradient(180deg, rgba(43, 0, 0, 0.9), rgba(60, 0, 0, 0.85));
   border: 3px solid #FFD700;
   border-radius: 20px;
-  max-width: 800px;
+  max-width: min(800px, 95vw);
   color: #F7F4EA;
   box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
 }
 
 .mega-jackpot-box h2 {
-  font-size: 2.8em;
+  font-size: clamp(1.75rem, 5.5vw, 2.8rem);
   color: #FFD700;
   font-weight: 900;
   text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-  margin-bottom: 20px;
+  margin-bottom: clamp(1rem, 3vw, 1.5rem);
   letter-spacing: 1px;
+  line-height: 1.2;
 }
 
 .mega-jackpot-box .intro {
-  font-size: 1.3em;
+  font-size: clamp(1.1rem, 2.8vw, 1.3rem);
   color: #FFF3B0;
-  margin-bottom: 20px;
+  margin-bottom: clamp(1rem, 3vw, 1.5rem);
+  line-height: 1.4;
 }
 
 .pool-prize.large {
-  font-size: 1.8em;
+  font-size: clamp(1.2rem, 3.5vw, 1.8rem);
   font-weight: bold;
   color: #FFD700;
-  margin: 15px 0;
+  margin: clamp(0.75rem, 2vw, 1rem) 0;
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  line-height: 1.3;
 }
 
 .timer.large {
-  font-size: 1.6em;
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
   color: #FFF3B0;
-  margin-bottom: 25px;
+  margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
   text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+  line-height: 1.3;
 }
 
 .bnb-balance {
-  font-size: 1.4em;
+  font-size: clamp(1.1rem, 2.8vw, 1.4rem);
   color: #FFD700;
   font-weight: 700;
-  margin-bottom: 25px;
+  margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  line-height: 1.4;
 }
 
 .mega-jackpot-box .note {
-  font-size: 1.1em;
+  font-size: clamp(0.95rem, 2.3vw, 1.1rem);
   line-height: 1.6;
   color: #F7F4EA;
-  max-width: 700px;
+  max-width: min(700px, 100%);
   margin: 0 auto;
   background: rgba(43, 0, 0, 0.5);
-  padding: 10px 20px;
+  padding: clamp(0.75rem, 2vw, 1.25rem) clamp(1rem, 3vw, 1.5rem);
   border-radius: 10px;
   border: 1px solid rgba(255, 215, 0, 0.3);
 }
@@ -772,9 +905,9 @@ footer .disclaimer p:last-child {
   background: rgba(43, 0, 0, 0.7);
   border: 1px solid rgba(255, 215, 0, 0.4);
   border-radius: 12px;
-  padding: 20px;
-  margin: 25px auto 0 auto;
-  max-width: 700px;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  margin: clamp(1.25rem, 3vw, 1.75rem) auto 0 auto;
+  max-width: min(700px, 95vw);
   color: #F7F4EA;
   text-align: left;
   box-shadow: 0 0 18px rgba(212, 175, 55, 0.25);
@@ -782,14 +915,18 @@ footer .disclaimer p:last-child {
 
 .winner-box.highlight h3 {
   color: #FFD700;
-  margin-bottom: 12px;
+  margin-bottom: clamp(0.75rem, 2vw, 1rem);
   text-align: center;
   text-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+  line-height: 1.3;
 }
 
 .winner-box.highlight p {
-  margin: 6px 0;
-  font-size: 0.95em;
+  margin: 0.5rem 0;
+  font-size: clamp(0.875rem, 2vw, 0.95rem);
+  line-height: 1.5;
+  overflow-wrap: break-word;
 }
 
 .winner-box.highlight strong {
@@ -954,8 +1091,10 @@ footer .disclaimer p:last-child {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: clamp(0.75rem, 2vw, 1rem);
+  margin-bottom: clamp(1rem, 3vw, 1.5rem);
+  flex-wrap: wrap;
+  padding: 0 1rem;
 }
 
 .main-btn {
@@ -963,13 +1102,14 @@ footer .disclaimer p:last-child {
   border: 2px solid #FFD700; /* Golden border */
   color: #FFD700;
   font-family: 'Noto Serif SC', serif;
-  font-size: 15px;
-  padding: 10px 18px;
+  font-size: clamp(0.875rem, 2vw, 0.95rem);
+  padding: clamp(0.625rem, 1.5vw, 0.75rem) clamp(1rem, 2.5vw, 1.25rem);
   border-radius: 12px;
   cursor: pointer;
   text-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
   box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
   transition: all 0.25s ease-in-out;
+  white-space: nowrap;
 }
 
 .main-btn:hover {
@@ -992,5 +1132,146 @@ footer .disclaimer p:last-child {
   animation: golden-glow 1.5s infinite alternate;
 }
 
+/* === Touch and Mobile Optimizations === */
+@media (hover: none) and (pointer: coarse) {
+  /* Remove hover effects on touch devices */
+  .pool:hover,
+  .winner-box:hover {
+    transform: none;
+  }
 
-  
+  /* Make buttons and links easier to tap */
+  .nav-link,
+  .main-btn,
+  .chat-send-btn,
+  button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Add active states for better touch feedback */
+.main-btn:active,
+.chat-send-btn:active,
+button:active {
+  transform: scale(0.96);
+}
+
+.nav-link:active {
+  opacity: 0.7;
+}
+
+/* Improve scrolling on iOS */
+.chat-messages,
+#winners-list {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent text selection on interactive elements */
+button,
+.nav-link,
+.main-btn {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Responsive images and media */
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Additional mobile breakpoints */
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: clamp(1.3rem, 6vw, 1.8rem);
+  }
+
+  .jackpot-overview,
+  .mega-highlight,
+  .winner-box.highlight {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+
+  .nav-link.highlight {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Desktop optimization for larger screens */
+@media (min-width: 1400px) {
+  .pools {
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .pool-row,
+  .winner-row {
+    max-width: 1400px;
+  }
+}
+
+/* === 🎵 Music Control Button === */
+.music-control {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(43, 0, 0, 0.95), rgba(80, 0, 0, 0.95));
+  border: 3px solid #FFD700;
+  color: #FFD700;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+  transition: all 0.3s ease;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse-glow 2s infinite;
+}
+
+.music-control:hover {
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+  background: linear-gradient(135deg, rgba(80, 0, 0, 0.95), rgba(120, 0, 0, 0.95));
+}
+
+.music-control:active {
+  transform: scale(0.95);
+}
+
+.music-control.muted {
+  opacity: 0.5;
+  animation: none;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+  }
+}
+
+/* Mobile adjustment for music button */
+@media (max-width: 768px) {
+  .music-control {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    bottom: 15px;
+    left: 15px;
+  }
+}
+
+
