@@ -226,7 +226,7 @@ async function handleWinnerUpload(tier, wallet, amount, txid = "", vrf = "") {
 }
 
 document.getElementById("follow-x").addEventListener("click", () => {
-  window.open("https://x.com/chinesepwrball", "_blank"); // replace with your real X URL
+  window.open("https://x.com/SolStimulus", "_blank"); // replace with your real X URL
 });
 
 document.getElementById("compatible").addEventListener("click", () => {
