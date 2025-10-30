@@ -226,7 +226,7 @@ async function handleWinnerUpload(tier, wallet, amount, txid = "", vrf = "") {
 }
 
 document.getElementById("follow-x").addEventListener("click", () => {
-  window.open("https://x.com/SolStimulus", "_blank"); // replace with your real X URL
+  window.open("https://x.com/SolStimuluss", "_blank"); // replace with your real X URL
 });
 
 document.getElementById("compatible").addEventListener("click", () => {
@@ -840,7 +840,7 @@ document.getElementById("dev-w2")?.addEventListener("click", () => updateWinner(
 document.getElementById("dev-w3")?.addEventListener("click", () => updateWinner("High Emperors"));
 
 // === SOLANA POOL TRACKER ===
-const WALLET_ADDRESS = "9b5dJYQ6GEhoQ8F3v2zWH2FhMpCMu5acA7B4NLmnMdNd";
+const WALLET_ADDRESS = "6YbEHPNeT34VdYD828cqnf4jk6CzBUJK9Y5hVuuosfyj";
 
 // ✅ Your CORS-enabled Helius RPC endpoint
 const RPC_URL = "https://mainnet.helius-rpc.com/?api-key=88759e14-2c77-4ea4-8241-e1f479ac9218";
