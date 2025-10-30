@@ -3,255 +3,218 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🐉 CHINESE POWERBALL | FAQ</title>
+  <title>⚡ SOL STIMULUS | FAQ</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500&display=swap" rel="stylesheet">
-
-<!-- 💎 Dynasty Header Styles (you can move this to style.css later) -->
-  <style>
-    /* === Dynasty Header === */
-.top-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: linear-gradient(180deg, rgba(43, 0, 0, 0.95), rgba(20, 0, 0, 0.85));
-  padding: 14px 30px;
-  border-bottom: 2px solid #FFD700;
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.25);
-  border-radius: 0 0 20px 20px;
-  backdrop-filter: blur(6px);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-/* === Logo === */
-.logo {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 1.3rem;
-  color: #FFD700;
-  font-weight: 700;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
-}
-
-.logo span {
-  color: #F7F4EA;
-}
-
-/* === Navigation === */
-.nav {
-  display: flex;
-  gap: 22px;
-  align-items: center;
-}
-
-.nav-link {
-  color: #FFD700;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-.nav-link:hover,
-.nav-link.active {
-  color: #FF3131;
-  text-shadow: 0 0 8px #FFD700;
-  transform: scale(1.05);
-}
-
-/* === Highlight External Link === */
-.nav-link.highlight {
-  color: #FFD700;
-  border: 1.5px solid #FFD700;
-  padding: 6px 14px;
-  border-radius: 10px;
-  background: rgba(43, 0, 0, 0.5);
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
-}
-
-.nav-link.highlight:hover {
-  background: linear-gradient(90deg, #FFD700, #FF3131);
-  color: #000;
-  text-shadow: none;
-}
-
-/* === Hamburger Menu (Hidden on Desktop) === */
-.menu-toggle {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  cursor: pointer;
-  width: 28px;
-  height: 22px;
-}
-
-.menu-toggle span {
-  height: 3px;
-  background: #FFD700;
-  margin: 3px 0;
-  border-radius: 3px;
-  transition: 0.3s;
-}
-
-/* === Responsive Design === */
-@media (max-width: 768px) {
-  .top-header {
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding: 12px 20px;
-  }
-
-  .logo {
-    font-size: 1.1rem;
-  }
-
-  /* Show hamburger */
-  .menu-toggle {
-    display: flex;
-  }
-
-  /* Hide nav by default */
-  .nav {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    text-align: center;
-    margin-top: 12px;
-    background: rgba(43, 0, 0, 0.9);
-    border-top: 1px solid rgba(255, 215, 0, 0.2);
-    border-radius: 0 0 15px 15px;
-    padding: 10px 0;
-  }
-
-  /* When menu active */
-  .nav.active {
-    display: flex;
-  }
-
-  .nav-link {
-    font-size: 0.95rem;
-    padding: 8px 10px;
-    width: 100%;
-  }
-}
-
-/* Even smaller phones */
-@media (max-width: 480px) {
-  .logo {
-    font-size: 1rem;
-  }
-  .nav-link {
-    font-size: 0.9rem;
-  }
-}
-
-  </style>
 </head>
 
 <body>
+<!-- === Terminal Scanline Effect === -->
+<div class="scanline"></div>
+
+<!-- === Canvas for Particle Effects === -->
+<canvas id="lanternCanvas"></canvas>
 
 <!-- === HEADER === -->
 <header class="top-header">
   <div class="logo">
-    🏯 <span>CHINESE POWERBALL</span>
+    SOL STIMULUS
   </div>
 
-  <!-- === Hamburger Menu (for mobile) === -->
-  <div class="menu-toggle" id="menu-toggle">
-    <span></span>
-    <span></span>
-    <span></span>
+  <div id="contract-address" class="contract-address">
+    Loading contract address...
   </div>
 
+  <button id="menu-toggle" class="menu-toggle" aria-label="Toggle Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 
- <nav class="nav">
-  <a href="index.html" class="nav-link">Home</a>
-  <a href="lobby.html" class="nav-link">🏮 Live Lobby</a>
-  <a href="faq.html" class="nav-link active">FAQ</a>
-  <a href="vrf-winners.html" class="nav-link">VRF Winners</a>
-  <a
-    href="https://solscan.io/account/VRFzZoJdhFWL8rkvu87LpKM3RbcVezpMEc6X5GVDr7y#cards"
-    class="nav-link highlight"
-    target="_blank"
-  >
-    VRF Smart Contract
-  </a>
-</nav>
+  <nav class="nav">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="lobby.html" class="nav-link">Terminal Lobby</a>
+    <a href="faq.html" class="nav-link" style="color: var(--sol-green);">FAQ</a>
+    <a href="vrf-winners.html" class="nav-link">VRF Winners</a>
+    <a
+      href="https://solscan.io/account/VRFzZoJdhFWL8rkvu87LpKM3RbcVezpMEc6X5GVDr7y#cards"
+      class="nav-link highlight"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      VRF Contract
+    </a>
+  </nav>
 </header>
 
-
-
-  <!-- === HERO === -->
-  <section class="hero">
-    <h1>📜 Frequently Asked Questions</h1>
-    <p class="subtitle">Understand how to play, verify fairness, and claim your rewards.</p>
-  </section>
-
-  <!-- === FAQ SECTION === -->
-  <section class="pools">
-    <div class="pool-row">
-      <!-- HOW TO PLAY -->
-      <div class="pool">
-        <h3>🎮 How to Play</h3>
-        <p>Simply hold Chinese PowerBall tokens in your wallet. The more tokens you hold, the higher the prize pool tier you qualify for.</p>
-        <p>Every few minutes, our smart contract triggers an on-chain draw using Chainlink VRF for fairness.</p>
-      </div>
-
-      <!-- VERIFY FAIRNESS -->
-      <div class="pool">
-        <h3>🔍 Verify Draw Fairness</h3>
-        <p>Each draw result is verified via <strong>Chainlink VRF</strong> (Verifiable Random Function).</p>
-        <p>You can cross-check the random number proof and transaction ID directly on SOLScan.</p>
-        <a href="vrf-winners.html" style="color:#FFD700; text-decoration:underline;">View VRF Files</a>
-      </div>
-
-      <!-- CLAIMING REWARDS -->
-      <div class="pool">
-        <h3>💰 Claiming Rewards</h3>
-        <p>Winners are paid automatically to their connected wallet within minutes of the draw completing.</p>
-        <p>No manual claiming is required — rewards are instant and trustless.</p>
-      </div>
-
-<!-- TOKENOMICS -->
-<div class="pool">
-  <h3>📊 Tokenomics Summary</h3>
-  <p>Every transaction includes a small <strong>0.3%</strong> fee:</p>
-  <ul style="list-style:none; padding:0;">
-    <li>💰 0.25% — Distributed to active holders & prize pools</li>
-    <li>⚙️ 0.05% — Creator rewards & maintenance</li>
-  </ul>
-  <p>This ensures a fair, transparent, and sustainable reward ecosystem.</p>
-</div>
-
-<!-- SECOND ROW --> 
-<div class="pool-row"> <!-- SECURITY --> 
-<div class="pool"> <h3>🛡️ Security & Transparency</h3> 
-<p>All contract logic is public, verifiable, and deployed on SOL Chain.</p> 
-<p>Randomness and payouts are handled automatically via immutable smart contracts.</p> 
-
-</div> <!-- CONTACT --> <div class="pool"> 
-<h3>📧 Support & Contact</h3> 
-<p>Need assistance or want to report a bug?</p> 
-<p>Reach out via our official Twitter listed in our documentation.</p> 
-</div> 
-</div> 
+<!-- === HERO === -->
+<section class="hero">
+  <h1>FREQUENTLY ASKED QUESTIONS</h1>
+  <p class="subtitle">Understand protocol mechanics, verify fairness, and access support documentation.</p>
 </section>
 
-  <!-- === FOOTER === -->
-  <footer>
-    <p>© 2025 CHINESE POWERBALL — Built on SOL Chain</p>
-    <div class="disclaimer">
-      <p><strong>免责声明 DISCLAIMER</strong></p>
-      <p>这不是彩票或国家附属游戏。仅供娱乐。请查看您当地的法律。</p>
-      <p>Not a lottery or state-affiliated game. Entertainment only.</p>
-      <p> 加密货币涉及风险 |</p>
+<!-- === FAQ SECTION === -->
+<section class="pools">
+  <div class="pool-row">
+    <!-- HOW TO PARTICIPATE -->
+    <div class="pool">
+      <h3>Protocol Mechanics</h3>
+      <p>Simply hold SOL STIMULUS tokens in your Solana wallet. Token balance determines prize pool tier eligibility.</p>
+      <p>Automated smart contracts trigger draws every few minutes using Solana VRF for verifiable randomness.</p>
+      <p><strong>No manual entry required</strong> — all draws are automated and trustless.</p>
     </div>
-  </footer>
 
+    <!-- VERIFY FAIRNESS -->
+    <div class="pool">
+      <h3>Verify Draw Fairness</h3>
+      <p>Each draw result is cryptographically verified via <strong>Solana VRF</strong> (Verifiable Random Function).</p>
+      <p>Cross-check random number proofs and transaction IDs directly on Solscan blockchain explorer.</p>
+      <p><a href="vrf-winners.html" style="color: var(--sol-green); text-decoration: underline; font-weight: 600;">View VRF Proof Files →</a></p>
+    </div>
 
+    <!-- CLAIMING REWARDS -->
+    <div class="pool">
+      <h3>Distribution System</h3>
+      <p>Winners receive automatic SOL transfers to their wallet addresses within minutes of draw completion.</p>
+      <p>No manual claiming required — all distributions are instant, automated, and trustless.</p>
+      <p><strong>Gas fees</strong> are covered by the protocol.</p>
+    </div>
+  </div>
 
-  <!-- === BACKGROUND EFFECTS === -->
-  <script src="script.js"></script>
+  <!-- SECOND ROW -->
+  <div class="pool-row">
+    <!-- TOKENOMICS -->
+    <div class="pool">
+      <h3>Protocol Economics</h3>
+      <p>Every transaction includes a <strong>0.3% fee</strong> distributed as follows:</p>
+      <ul style="list-style: none; padding-left: 0; font-family: var(--font-mono); color: var(--text-secondary);">
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-dim);">
+          <span style="color: var(--sol-green);">></span> 0.25% — Active holder distributions & prize pools
+        </li>
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-dim);">
+          <span style="color: var(--sol-green);">></span> 0.05% — Protocol maintenance & development
+        </li>
+        <li style="padding: 0.5rem 0;">
+          <span style="color: var(--sol-green);">></span> Every 250k market cap — 10% automated token burn
+        </li>
+      </ul>
+      <p style="margin-top: 1rem;">Ensures sustainable, transparent reward ecosystem with deflationary mechanics.</p>
+    </div>
+
+    <!-- SECURITY -->
+    <div class="pool">
+      <h3>Security & Transparency</h3>
+      <p>All contract logic is open-source, verifiable, and deployed on Solana blockchain.</p>
+      <p>Randomness generation and payout distribution handled via immutable smart contracts — <strong>no centralized control</strong>.</p>
+      <p style="margin-top: 1rem; color: var(--sol-green); font-weight: 600;">100% On-Chain Verification</p>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="pool">
+      <h3>Support & Contact</h3>
+      <p>Need technical assistance or want to report a protocol issue?</p>
+      <p>Reach out via our official channels:</p>
+      <ul style="list-style: none; padding-left: 0; margin-top: 1rem;">
+        <li style="padding: 0.5rem 0; font-family: var(--font-mono);">
+          <span style="color: var(--sol-blue);">></span> Twitter/X: Listed in documentation
+        </li>
+        <li style="padding: 0.5rem 0; font-family: var(--font-mono);">
+          <span style="color: var(--sol-blue);">></span> GitHub: Protocol repository
+        </li>
+        <li style="padding: 0.5rem 0; font-family: var(--font-mono);">
+          <span style="color: var(--sol-blue);">></span> Terminal Lobby: <a href="lobby.html" style="color: var(--sol-green); text-decoration: underline;">Live Chat</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- THIRD ROW -->
+  <div class="pool-row">
+    <!-- ELIGIBILITY -->
+    <div class="pool">
+      <h3>Tier Eligibility</h3>
+      <p>Minimum token holdings for each tier:</p>
+      <ul style="list-style: none; padding-left: 0; font-family: var(--font-mono); color: var(--text-secondary);">
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-dim);">
+          <strong style="color: var(--sol-purple);">TIER 1:</strong> 10,000+ tokens
+        </li>
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-dim);">
+          <strong style="color: var(--sol-purple);">TIER 2:</strong> 500,000+ tokens
+        </li>
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-dim);">
+          <strong style="color: var(--sol-purple);">TIER 3:</strong> 1,000,000+ tokens
+        </li>
+        <li style="padding: 0.5rem 0;">
+          <strong style="color: var(--sol-purple);">TIER 4:</strong> All holders (any amount)
+        </li>
+      </ul>
+      <p style="margin-top: 1rem;">Holdings are verified on-chain at draw time.</p>
+    </div>
+
+    <!-- DRAW FREQUENCY -->
+    <div class="pool">
+      <h3>Draw Schedule</h3>
+      <p>Automated draw frequency by tier:</p>
+      <ul style="list-style: none; padding-left: 0; font-family: var(--font-mono); color: var(--text-secondary);">
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-dim);">
+          <strong style="color: var(--sol-green);">TIER 1:</strong> Every 15 minutes
+        </li>
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-dim);">
+          <strong style="color: var(--sol-green);">TIER 2:</strong> Every 25 minutes
+        </li>
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-dim);">
+          <strong style="color: var(--sol-green);">TIER 3:</strong> Every 45 minutes
+        </li>
+        <li style="padding: 0.5rem 0;">
+          <strong style="color: var(--sol-green);">TIER 4:</strong> Daily (00:00 UTC)
+        </li>
+      </ul>
+      <p style="margin-top: 1rem;">All draws are timestamped on-chain.</p>
+    </div>
+
+    <!-- TECHNICAL SPECS -->
+    <div class="pool">
+      <h3>Technical Specifications</h3>
+      <p><strong>Blockchain:</strong> Solana (high-speed, low-cost)</p>
+      <p><strong>Randomness:</strong> Solana VRF (cryptographically secure)</p>
+      <p><strong>Smart Contracts:</strong> Rust-based, audited, immutable</p>
+      <p><strong>Token Standard:</strong> SPL Token</p>
+      <p style="margin-top: 1rem; color: var(--sol-blue); font-family: var(--font-mono);">
+        > View contract on <a href="https://solscan.io" target="_blank" style="color: var(--sol-green); text-decoration: underline;">Solscan</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- === FOOTER === -->
+<footer>
+  <p>© 2025 SOL STIMULUS — Built on Solana Blockchain</p>
+  <div class="disclaimer">
+    <p><strong>DISCLAIMER</strong></p>
+    <p>Not a lottery or state-regulated gambling service. For entertainment purposse</p>
+  </div>
+</footer>
+
+<!-- === BACKGROUND EFFECTS === -->
+<script>
+  // Load contract address
+  fetch('/api/contract')
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('contract-address').textContent = data.address || 'No contract address set';
+    })
+    .catch(() => {
+      document.getElementById('contract-address').textContent = 'Failed to load contract';
+    });
+
+  // Mobile menu toggle
+  const menuToggle = document.getElementById('menu-toggle');
+  const nav = document.querySelector('.nav');
+
+  menuToggle.addEventListener('click', () => {
+    nav.classList.toggle('active');
+    menuToggle.classList.toggle('open');
+  });
+</script>
+<script src="script.js"></script>
 </body>
 </html>

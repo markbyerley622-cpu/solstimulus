@@ -234,7 +234,7 @@ document.getElementById("compatible").addEventListener("click", () => {
 });
 
 
-// === FLOATING LANTERNS + PETALS BACKGROUND ===
+// === MATRIX-STYLE DIGITAL RAIN BACKGROUND ===
 const lanternCanvas = document.createElement("canvas");
 lanternCanvas.id = "lanternCanvas";
 Object.assign(lanternCanvas.style, {
@@ -256,128 +256,156 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
-const chineseSymbols = ["福", "喜", "龙", "财", "寿", "运", "梦", "金", "光", "安"];
+// Matrix-style characters (alphanumeric + special symbols)
+const matrixSymbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:<>?/~";
 
-class Lantern {
+// Solana color palette
+const solanaColors = [
+  "rgba(153, 69, 255, 0.9)",   // Purple
+  "rgba(20, 241, 149, 0.9)",    // Green
+  "rgba(0, 212, 255, 0.9)",     // Blue
+  "rgba(220, 31, 255, 0.9)",    // Pink
+];
+
+class MatrixStream {
   constructor() {
     this.reset();
   }
   reset() {
-    this.x = Math.random() * w;
-    this.y = h + Math.random() * h;
-    this.size = 25 + Math.random() * 35;
-    this.speed = 0.3 + Math.random() * 0.6;
-    this.phase = Math.random() * Math.PI * 2;
-    this.opacity = 0.7 + Math.random() * 0.3;
-    this.symbol = chineseSymbols[Math.floor(Math.random() * chineseSymbols.length)];
-    this.swing = 0;
+    this.x = Math.floor(Math.random() * (w / 20)) * 20;
+    this.y = Math.random() * -h;
+    this.speed = 2 + Math.random() * 5;
+    this.length = 10 + Math.random() * 20;
+    this.characters = [];
+    this.color = solanaColors[Math.floor(Math.random() * solanaColors.length)];
+
+    // Generate stream of characters
+    for (let i = 0; i < this.length; i++) {
+      this.characters.push({
+        char: matrixSymbols[Math.floor(Math.random() * matrixSymbols.length)],
+        opacity: 1 - (i / this.length)
+      });
+    }
   }
+
   update() {
-    this.y -= this.speed;
-    this.swing += 0.02;
-    this.x += Math.sin(this.swing + this.phase) * 0.3;
-    if (this.y < -50) this.reset();
+    this.y += this.speed;
+
+    // Randomly change characters for glitch effect
+    if (Math.random() < 0.05) {
+      const idx = Math.floor(Math.random() * this.characters.length);
+      this.characters[idx].char = matrixSymbols[Math.floor(Math.random() * matrixSymbols.length)];
+    }
+
+    if (this.y - this.length * 20 > h) {
+      this.reset();
+    }
   }
+
   draw(ctx) {
-    const grad = ctx.createLinearGradient(this.x, this.y - this.size, this.x, this.y + this.size);
-    grad.addColorStop(0, "rgba(255,120,60,0.9)");
-    grad.addColorStop(0.5, "rgba(255,60,0,0.8)");
-    grad.addColorStop(1, "rgba(120,0,0,0.9)");
-    ctx.beginPath();
-    ctx.ellipse(this.x, this.y, this.size * 0.6, this.size, 0, 0, Math.PI * 2);
-    ctx.fillStyle = grad;
-    ctx.shadowBlur = 15;
-    ctx.shadowColor = "rgba(255,80,40,0.7)";
-    ctx.globalAlpha = this.opacity;
-    ctx.fill();
-    ctx.save();
-    ctx.font = `${this.size * 0.9}px "Noto Serif SC", serif`;
-    ctx.fillStyle = "rgba(255,240,180,0.85)";
+    ctx.font = "16px 'JetBrains Mono', monospace";
     ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.shadowColor = "rgba(255,200,80,0.6)";
-    ctx.shadowBlur = 8;
-    ctx.fillText(this.symbol, this.x, this.y);
-    ctx.restore();
-    ctx.beginPath();
-    ctx.moveTo(this.x, this.y + this.size);
-    ctx.lineTo(this.x, this.y + this.size * 1.3);
-    ctx.strokeStyle = "rgba(255,220,150,0.8)";
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    ctx.globalAlpha = 1;
+    ctx.shadowBlur = 10;
+
+    for (let i = 0; i < this.characters.length; i++) {
+      const charY = this.y - (i * 20);
+
+      if (charY > 0 && charY < h) {
+        const char = this.characters[i];
+        const alpha = char.opacity * 0.8;
+
+        // Brightest character at the head of stream
+        if (i === 0) {
+          ctx.fillStyle = this.color.replace('0.9', '1');
+          ctx.shadowColor = this.color;
+        } else {
+          ctx.fillStyle = this.color.replace('0.9', alpha.toString());
+          ctx.shadowColor = this.color.replace('0.9', (alpha * 0.5).toString());
+        }
+
+        ctx.fillText(char.char, this.x, charY);
+      }
+    }
+
     ctx.shadowBlur = 0;
   }
 }
 
-const clouds = Array.from({ length: 6 }).map(() => ({
-  x: Math.random() * w,
-  y: Math.random() * h * 0.5,
-  size: 200 + Math.random() * 200,
-  speed: 0.05 + Math.random() * 0.1,
-  opacity: 0.05 + Math.random() * 0.07,
-}));
-
-function drawClouds() {
-  for (const c of clouds) {
-    const grad = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.size);
-    grad.addColorStop(0, `rgba(255,230,180,${c.opacity})`);
-    grad.addColorStop(1, "transparent");
-    ctx.beginPath();
-    ctx.fillStyle = grad;
-    ctx.arc(c.x, c.y, c.size, 0, Math.PI * 2);
-    ctx.fill();
-    c.x += c.speed;
-    if (c.x - c.size > w) {
-      c.x = -c.size;
-      c.y = Math.random() * h * 0.5;
-    }
+// Floating geometric particles
+class GeometricParticle {
+  constructor() {
+    this.reset();
   }
-}
 
-class Petal {
-  constructor() { this.reset(); }
   reset() {
     this.x = Math.random() * w;
-    this.y = Math.random() * -h;
-    this.size = 6 + Math.random() * 6;
-    this.speedY = 0.5 + Math.random() * 0.5;
-    this.speedX = 0.3 - Math.random() * 0.6;
-    this.angle = Math.random() * Math.PI * 2;
-    this.spin = 0.02 + Math.random() * 0.03;
-    this.opacity = 0.4 + Math.random() * 0.4;
+    this.y = Math.random() * h;
+    this.size = 2 + Math.random() * 4;
+    this.speedX = -0.5 + Math.random() * 1;
+    this.speedY = -0.5 + Math.random() * 1;
+    this.opacity = 0.3 + Math.random() * 0.4;
+    this.color = solanaColors[Math.floor(Math.random() * solanaColors.length)];
+    this.shape = Math.floor(Math.random() * 3); // 0: square, 1: circle, 2: triangle
   }
+
   update() {
     this.x += this.speedX;
     this.y += this.speedY;
-    this.angle += this.spin;
-    if (this.y > h + 20) this.reset();
+
+    if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) {
+      this.reset();
+    }
   }
+
   draw(ctx) {
     ctx.save();
-    ctx.translate(this.x, this.y);
-    ctx.rotate(this.angle);
-    const grad = ctx.createLinearGradient(0, 0, this.size, this.size);
-    grad.addColorStop(0, `rgba(255,182,193,${this.opacity})`);
-    grad.addColorStop(1, `rgba(255,105,180,${this.opacity * 0.7})`);
-    ctx.fillStyle = grad;
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.quadraticCurveTo(this.size * 0.5, -this.size * 0.6, this.size, 0);
-    ctx.quadraticCurveTo(this.size * 0.5, this.size * 0.6, 0, 0);
-    ctx.fill();
+    ctx.globalAlpha = this.opacity;
+    ctx.fillStyle = this.color;
+    ctx.shadowBlur = 5;
+    ctx.shadowColor = this.color;
+
+    if (this.shape === 0) {
+      // Square
+      ctx.fillRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
+    } else if (this.shape === 1) {
+      // Circle
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      // Triangle
+      ctx.beginPath();
+      ctx.moveTo(this.x, this.y - this.size / 2);
+      ctx.lineTo(this.x + this.size / 2, this.y + this.size / 2);
+      ctx.lineTo(this.x - this.size / 2, this.y + this.size / 2);
+      ctx.closePath();
+      ctx.fill();
+    }
+
     ctx.restore();
   }
 }
 
-const lanterns = Array.from({ length: 25 }, () => new Lantern());
-const petals = Array.from({ length: 40 }, () => new Petal());
+// Create streams and particles
+const streams = Array.from({ length: Math.floor(w / 40) }, () => new MatrixStream());
+const particles = Array.from({ length: 30 }, () => new GeometricParticle());
 
 function animate() {
-  ctx.clearRect(0, 0, w, h);
-  drawClouds();
-  lanterns.forEach(l => { l.update(); l.draw(ctx); });
-  petals.forEach(p => { p.update(); p.draw(ctx); });
+  // Fade effect for trails
+  ctx.fillStyle = "rgba(10, 10, 15, 0.05)";
+  ctx.fillRect(0, 0, w, h);
+
+  // Draw and update everything
+  streams.forEach(s => {
+    s.update();
+    s.draw(ctx);
+  });
+
+  particles.forEach(p => {
+    p.update();
+    p.draw(ctx);
+  });
+
   requestAnimationFrame(animate);
 }
 animate();
@@ -865,106 +893,113 @@ setInterval(() => {
 }, 10000);
 
 
-// === 🎵 CHINESE BACKGROUND MUSIC & GONG SOUNDS (Generated with Web Audio API) ===
+// === 🎵 FUTURISTIC TECH SOUNDS & AMBIENT MUSIC (Generated with Web Audio API) ===
 
 // Create Audio Context
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 let chineseMusicPlaying = false;
 let chineseMusicInterval = null;
 
-// === 🔔 SYNTHESIZED CHINESE GONG SOUND ===
+// === 🔊 SYNTHESIZED TECH BEEP/CLICK SOUND ===
 function playGong() {
   const now = audioContext.currentTime;
 
-  // Create oscillators for rich gong sound
+  // Create oscillators for digital beep sound
   const oscillator1 = audioContext.createOscillator();
   const oscillator2 = audioContext.createOscillator();
-  const oscillator3 = audioContext.createOscillator();
 
   // Create gain nodes for volume control
   const gainNode = audioContext.createGain();
   const masterGain = audioContext.createGain();
 
-  // Gong frequencies (low, metallic sound)
-  oscillator1.frequency.setValueAtTime(80, now);
-  oscillator2.frequency.setValueAtTime(120, now);
-  oscillator3.frequency.setValueAtTime(160, now);
+  // Tech beep frequencies (high, sharp, digital)
+  oscillator1.frequency.setValueAtTime(1200, now);
+  oscillator2.frequency.setValueAtTime(1800, now);
 
-  oscillator1.type = 'sine';
-  oscillator2.type = 'triangle';
-  oscillator3.type = 'square';
+  oscillator1.type = 'square'; // Digital, harsh sound
+  oscillator2.type = 'sawtooth'; // Tech-like harmonics
 
   // Connect audio nodes
   oscillator1.connect(gainNode);
   oscillator2.connect(gainNode);
-  oscillator3.connect(gainNode);
   gainNode.connect(masterGain);
   masterGain.connect(audioContext.destination);
 
-  // Volume envelope (attack, decay, sustain, release)
+  // Volume envelope (quick attack, fast decay)
   gainNode.gain.setValueAtTime(0, now);
-  gainNode.gain.linearRampToValueAtTime(0.8, now + 0.01); // Attack
-  gainNode.gain.exponentialRampToValueAtTime(0.3, now + 0.1); // Decay
-  gainNode.gain.exponentialRampToValueAtTime(0.01, now + 1.5); // Release
+  gainNode.gain.linearRampToValueAtTime(0.3, now + 0.005); // Quick attack
+  gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.08); // Fast decay
 
-  masterGain.gain.setValueAtTime(0.4, now); // Master volume
+  masterGain.gain.setValueAtTime(0.2, now); // Master volume
 
   // Start and stop oscillators
   oscillator1.start(now);
   oscillator2.start(now);
-  oscillator3.start(now);
 
-  oscillator1.stop(now + 1.5);
-  oscillator2.stop(now + 1.5);
-  oscillator3.stop(now + 1.5);
+  oscillator1.stop(now + 0.08);
+  oscillator2.stop(now + 0.08);
 }
 
-// === 🎵 SYNTHESIZED CHINESE PENTATONIC MUSIC ===
-// Chinese pentatonic scale (C, D, E, G, A) - traditional sound
+// === 🎵 SYNTHESIZED FUTURISTIC SYNTH MUSIC ===
+// Futuristic synth scale (minor with tech intervals) - cyberpunk sound
 const chineseScale = [
+  220.00, // A3
+  246.94, // B3
   261.63, // C4
   293.66, // D4
   329.63, // E4
+  349.23, // F4
   392.00, // G4
   440.00, // A4
+  493.88, // B4
   523.25, // C5
   587.33, // D5
   659.25, // E5
-  783.99, // G5
-  880.00, // A5
 ];
 
-// Traditional Chinese melody pattern
+// Futuristic ambient arpeggio pattern
 const melodyPattern = [
-  { note: 8, duration: 0.5 }, // G5
-  { note: 7, duration: 0.5 }, // E5
-  { note: 5, duration: 0.5 }, // C5
-  { note: 4, duration: 0.5 }, // A4
-  { note: 3, duration: 1.0 }, // G4
-  { note: 2, duration: 0.5 }, // E4
-  { note: 3, duration: 0.5 }, // G4
-  { note: 4, duration: 1.0 }, // A4
-  { note: 5, duration: 0.5 }, // C5
-  { note: 7, duration: 0.5 }, // E5
-  { note: 8, duration: 1.5 }, // G5
-  { note: 7, duration: 0.5 }, // E5
-  { note: 5, duration: 1.0 }, // C5
+  { note: 7, duration: 0.25 }, // A4
+  { note: 9, duration: 0.25 }, // C5
+  { note: 11, duration: 0.25 }, // E5
+  { note: 7, duration: 0.25 }, // A4
+  { note: 10, duration: 0.25 }, // D5
+  { note: 9, duration: 0.25 }, // C5
+  { note: 7, duration: 0.5 }, // A4
+  { note: 4, duration: 0.25 }, // E4
+  { note: 6, duration: 0.25 }, // G4
+  { note: 9, duration: 0.25 }, // C5
+  { note: 4, duration: 0.25 }, // E4
+  { note: 7, duration: 0.25 }, // A4
+  { note: 6, duration: 0.25 }, // G4
+  { note: 4, duration: 0.5 }, // E4
+  { note: 7, duration: 0.25 }, // A4
+  { note: 11, duration: 0.25 }, // E5
+  { note: 10, duration: 0.25 }, // D5
+  { note: 9, duration: 0.5 }, // C5
 ];
 
 function playChineseNote(frequency, duration, startTime) {
   const oscillator = audioContext.createOscillator();
   const gainNode = audioContext.createGain();
+  const filter = audioContext.createBiquadFilter();
 
-  oscillator.type = 'sine'; // Smooth, flute-like sound
+  oscillator.type = 'sawtooth'; // Synth-like, futuristic sound
   oscillator.frequency.setValueAtTime(frequency, startTime);
 
-  // Gentle attack and release for traditional Chinese instrument sound
-  gainNode.gain.setValueAtTime(0, startTime);
-  gainNode.gain.linearRampToValueAtTime(0.15, startTime + 0.05); // Attack
-  gainNode.gain.linearRampToValueAtTime(0.12, startTime + duration - 0.1); // Sustain
-  gainNode.gain.linearRampToValueAtTime(0, startTime + duration); // Release
+  // Low-pass filter for warm synth sound
+  filter.type = 'lowpass';
+  filter.frequency.setValueAtTime(2000, startTime);
+  filter.Q.setValueAtTime(1, startTime);
 
-  oscillator.connect(gainNode);
+  // Sharp attack and gradual release for synth pluck
+  gainNode.gain.setValueAtTime(0, startTime);
+  gainNode.gain.linearRampToValueAtTime(0.08, startTime + 0.01); // Quick attack
+  gainNode.gain.exponentialRampToValueAtTime(0.05, startTime + duration - 0.05); // Sustain
+  gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration); // Release
+
+  oscillator.connect(filter);
+  filter.connect(gainNode);
   gainNode.connect(audioContext.destination);
 
   oscillator.start(startTime);
@@ -981,17 +1016,17 @@ function playChineseMelody() {
     currentTime += note.duration;
   });
 
-  // Schedule next melody loop
-  const totalDuration = melodyPattern.reduce((sum, note) => sum + note.duration, 0);
-  setTimeout(() => {
-    if (chineseMusicPlaying) {
-      playChineseMelody();
-    }
-  }, totalDuration * 1000);
+  // No longer loops - music plays once only
 }
 
-// Function to start background music
+// Function to start background music (plays once only, never again)
 function startBackgroundMusic() {
+  // Check if music has already been played before
+  if (localStorage.getItem('musicPlayed') === 'true') {
+    console.log('🔇 Music already played previously - skipping');
+    return;
+  }
+
   if (!chineseMusicPlaying) {
     chineseMusicPlaying = true;
     // Resume audio context (required by some browsers)
@@ -999,20 +1034,31 @@ function startBackgroundMusic() {
       audioContext.resume();
     }
     playChineseMelody();
-    console.log('🎵 Chinese music started!');
+
+    // Mark music as played in localStorage so it never plays again
+    localStorage.setItem('musicPlayed', 'true');
+
+    console.log('🎵 Futuristic ambient music played once!');
+
+    // Stop music after it finishes playing once
+    const totalDuration = melodyPattern.reduce((sum, note) => sum + note.duration, 0);
+    setTimeout(() => {
+      chineseMusicPlaying = false;
+      console.log('🔇 Music finished - will not play again');
+    }, totalDuration * 1000);
   }
 }
 
 // Function to stop background music
 function stopBackgroundMusic() {
   chineseMusicPlaying = false;
-  console.log('🔇 Chinese music stopped.');
+  console.log('🔇 Ambient music stopped.');
 }
 
-// Fallback: Start music on first user interaction
+// Fallback: Start music on first user interaction (only if never played before)
 let musicStarted = false;
 function tryStartMusic() {
-  if (!musicStarted) {
+  if (!musicStarted && localStorage.getItem('musicPlayed') !== 'true') {
     startBackgroundMusic();
     musicStarted = true;
   }
@@ -1027,73 +1073,59 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(tryStartMusic, 1000);
 });
 
-// === 🔔 Add Gong Sound to ALL Interactive Elements ===
+// === 🔊 Add Tech Beep Sound to ALL Interactive Elements ===
 
-// Add gong sound to all buttons
+// Add tech beep to all buttons
 document.querySelectorAll('button').forEach(btn => {
   btn.addEventListener('click', playGong);
 });
 
-// Add gong sound to all pool boxes
+// Add tech beep to all pool boxes
 document.querySelectorAll('.pool').forEach(pool => {
   pool.addEventListener('click', playGong);
 });
 
-// Add gong sound to all winner boxes
+// Add tech beep to all winner boxes
 document.querySelectorAll('.winner-box').forEach(box => {
   box.addEventListener('click', playGong);
 });
 
-// Add gong sound to all navigation links
+// Add tech beep to all navigation links
 document.querySelectorAll('.nav-link').forEach(link => {
   link.addEventListener('click', playGong);
 });
 
-// Add gong sound to main buttons (Follow X, Compatible, x402 banner)
+// Add tech beep to main buttons (Follow X, Compatible, x402 banner)
 document.querySelectorAll('.main-btn').forEach(btn => {
   btn.addEventListener('click', playGong);
 });
 
-// Add gong sound to x402 banner
+// Add tech beep to x402 banner
 const x402Banner = document.querySelector('.x402-banner');
 if (x402Banner) {
   x402Banner.style.cursor = 'pointer';
   x402Banner.addEventListener('click', playGong);
 }
 
-// Add gong sound to jackpot boxes
+// Add tech beep to jackpot boxes
 document.querySelectorAll('.jackpot-overview, .mega-jackpot-box, .tax-box, .distribution-box').forEach(box => {
   box.style.cursor = 'pointer';
   box.addEventListener('click', playGong);
 });
 
-// Add gong sound to logo
+// Add tech beep to logo
 const logo = document.querySelector('.logo');
 if (logo) {
   logo.style.cursor = 'pointer';
   logo.addEventListener('click', playGong);
 }
 
-console.log('🎵 Chinese music and gong sounds initialized!');
+console.log('🎵 Futuristic sounds and ambient music initialized!');
 
-// === 🎵 Music Toggle Button ===
+// === 🎵 Music Toggle Button (disabled since music only plays once) ===
 const musicToggle = document.getElementById('music-toggle');
 
 if (musicToggle) {
-  musicToggle.addEventListener('click', () => {
-    if (chineseMusicPlaying) {
-      stopBackgroundMusic();
-      musicToggle.textContent = '🔇';
-      musicToggle.classList.add('muted');
-      musicToggle.title = 'Play Music';
-    } else {
-      startBackgroundMusic();
-      musicToggle.textContent = '🎵';
-      musicToggle.classList.remove('muted');
-      musicToggle.title = 'Pause Music';
-    }
-
-    // Play gong sound when toggling music
-    playGong();
-  });
+  // Hide the music toggle button since music only plays once
+  musicToggle.style.display = 'none';
 }

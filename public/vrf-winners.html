@@ -3,435 +3,420 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🐉 CHINESE POWERBALL | VRF Winners</title>
+  <title>⚡ SOL STIMULUS | VRF Winners</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500&display=swap" rel="stylesheet">
   <style>
+    /* === Winner Table Specific Styles === */
+    .winner-table-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-8);
+      max-width: min(1200px, 95vw);
+      margin: var(--space-10) auto;
+      box-shadow: var(--shadow-card), var(--shadow-glow);
+      overflow-x: auto;
+      position: relative;
+    }
 
-/* === Dynasty Header === */
-.top-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: linear-gradient(180deg, rgba(43, 0, 0, 0.95), rgba(20, 0, 0, 0.85));
-  padding: 14px 30px;
-  border-bottom: 2px solid #FFD700;
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.25);
-  border-radius: 0 0 20px 20px;
-  backdrop-filter: blur(6px);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+    .winner-table-section::before {
+      content: "$ ./query_winners.sh --verify-all";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg-elevated);
+      color: var(--sol-green);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      padding: var(--space-2) var(--space-4);
+      border-bottom: 1px solid var(--border-dim);
+      border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+    }
 
-/* === Logo === */
-.logo {
-  font-family: 'Noto Serif SC', serif;
-  font-size: 1.3rem;
-  color: #FFD700;
-  font-weight: 700;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
-}
+    .winner-table-section h2 {
+      color: var(--sol-purple);
+      text-shadow: var(--shadow-glow);
+      margin-bottom: var(--space-6);
+      margin-top: var(--space-6);
+      font-size: var(--text-2xl);
+      text-align: center;
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
 
-.logo span {
-  color: #F7F4EA;
-}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: var(--text-secondary);
+      text-align: center;
+      font-size: var(--text-sm);
+      font-family: var(--font-mono);
+      background: var(--bg-terminal);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      min-width: 700px;
+    }
 
-/* === Navigation === */
-.nav {
-  display: flex;
-  gap: 22px;
-  align-items: center;
-}
+    thead {
+      background: var(--bg-elevated);
+      border-bottom: 2px solid var(--border-primary);
+    }
 
-.nav-link {
-  color: #FFD700;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
+    th,
+    td {
+      padding: var(--space-4) var(--space-3);
+      border-bottom: 1px solid var(--border-dim);
+    }
 
-.nav-link:hover,
-.nav-link.active {
-  color: #FF3131;
-  text-shadow: 0 0 8px #FFD700;
-  transform: scale(1.05);
-}
+    th {
+      color: var(--sol-green);
+      font-weight: var(--font-bold);
+      text-shadow: var(--shadow-glow-green);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: var(--text-xs);
+    }
 
-/* === Highlight External Link === */
-.nav-link.highlight {
-  color: #FFD700;
-  border: 1.5px solid #FFD700;
-  padding: 6px 14px;
-  border-radius: 10px;
-  background: rgba(43, 0, 0, 0.5);
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
-}
+    tr:hover td {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      transition: var(--transition-all);
+    }
 
-.nav-link.highlight:hover {
-  background: linear-gradient(90deg, #FFD700, #FF3131);
-  color: #000;
-  text-shadow: none;
-}
+    .vrf-link,
+    .tx-link {
+      color: var(--sol-green);
+      text-decoration: none;
+      transition: var(--transition-all);
+      font-weight: var(--font-semibold);
+      position: relative;
+    }
 
-/* === Winner Table Section === */
-.winner-table-section {
-  background: rgba(43, 0, 0, 0.85);
-  border: 2px solid #FFD700;
-  border-radius: 15px;
-  padding: 30px;
-  max-width: 1000px;
-  margin: 50px auto;
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
-  overflow-x: auto;
-}
+    .vrf-link::before {
+      content: "📄 ";
+    }
 
-/* === Table === */
-.winner-table-section h2 {
-  color: #FFD700;
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
-  margin-bottom: 20px;
-  font-size: 1.6rem;
-  text-align: center;
-}
+    .tx-link::before {
+      content: "🔗 ";
+    }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  color: #F7F4EA;
-  text-align: center;
-  font-size: 0.95rem;
-  background: rgba(30, 0, 0, 0.5);
-  border-radius: 10px;
-  overflow: hidden;
-  min-width: 600px; /* ensures scroll on small screens */
-}
+    .vrf-link:hover,
+    .tx-link:hover {
+      color: var(--sol-blue);
+      text-shadow: 0 0 10px rgba(0, 212, 255, 0.8);
+      text-decoration: underline;
+    }
 
-thead {
-  background: rgba(255, 215, 0, 0.15);
-  border-bottom: 2px solid #FFD700;
-}
+    /* Table responsive wrapper */
+    .table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: var(--radius-lg);
+    }
 
-th, td {
-  padding: 12px 8px;
-  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-}
+    .table-wrapper::-webkit-scrollbar {
+      height: 8px;
+    }
 
-th {
-  color: #FFD700;
-  font-weight: bold;
-  text-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
-}
+    .table-wrapper::-webkit-scrollbar-track {
+      background: var(--bg-darker);
+      border-radius: var(--radius-md);
+    }
 
-tr:hover {
-  background: rgba(255, 215, 0, 0.1);
-  transition: background 0.3s;
-}
+    .table-wrapper::-webkit-scrollbar-thumb {
+      background: var(--sol-purple);
+      border-radius: var(--radius-md);
+    }
 
-.vrf-link, .tx-link {
-  color: #FFD700;
-  text-decoration: underline;
-  transition: 0.3s;
-}
+    .table-wrapper::-webkit-scrollbar-thumb:hover {
+      background: var(--sol-green);
+    }
 
-.vrf-link:hover, .tx-link:hover {
-  text-shadow: 0 0 6px rgba(255, 215, 0, 0.6);
-}
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: var(--space-10);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
 
-/* === Responsive Design === */
-@media (max-width: 768px) {
-  .top-header {
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding: 12px 20px;
-  }
+    .empty-state::before {
+      content: "⚠";
+      display: block;
+      font-size: var(--text-3xl);
+      margin-bottom: var(--space-4);
+      color: var(--warning);
+    }
 
-  .menu-toggle {
-    display: flex;
-  }
+    /* Stats summary */
+    .stats-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      margin-top: var(--space-6);
+    }
 
-  /* Hide nav by default */
-  .nav {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    text-align: center;
-    margin-top: 12px;
-    background: rgba(43, 0, 0, 0.9);
-    border-top: 1px solid rgba(255, 215, 0, 0.2);
-    border-radius: 0 0 15px 15px;
-    padding: 10px 0;
-  }
+    .stat-card {
+      background: var(--bg-terminal);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      text-align: center;
+      transition: var(--transition-all);
+    }
 
-  /* When menu active */
-  .nav.active {
-    display: flex;
-  }
+    .stat-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-2px);
+    }
 
-  .nav-link {
-    font-size: 0.95rem;
-    padding: 8px 10px;
-    width: 100%;
-  }
-}
+    .stat-label {
+      color: var(--text-muted);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: var(--space-2);
+      font-family: var(--font-mono);
+    }
 
-/* Center the whole section horizontally */
-.winner-table-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* centers table */
-  justify-content: center;
-  margin: 60px auto;
-  width: 90%;
-  max-width: 1000px;
-}
+    .stat-value {
+      color: var(--sol-purple);
+      font-size: var(--text-2xl);
+      font-weight: var(--font-bold);
+      font-family: var(--font-mono);
+      text-shadow: var(--shadow-glow);
+    }
 
-/* Ensure table itself is centered inside */
-.winner-table-section table {
-  margin: 0 auto;
-}
-
-  th, td {
-    padding: 10px 6px;
-  }
-}
-
-@media (max-width: 480px) {
-  .logo {
-    font-size: 1rem;
-  }
-
-  .nav {
-    flex-direction: column;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .nav-link {
-    display: block;
-    width: 100%;
-    text-align: center;
-    border-radius: 6px;
-  }
-
-  .winner-table-section h2 {
-    font-size: 1.2rem;
-  }
-}
-
-
-/* === FLOATING LANTERNS & PETALS BACKGROUND === */
-#floating-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 0; /* stays behind everything */
-  pointer-events: none;
-}
-
-.lantern, .petal {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  opacity: 0.8;
-}
-
-/* Lanterns (golden glowing orbs) */
-.lantern {
-  width: 25px;
-  height: 25px;
-  background: radial-gradient(circle, rgba(255, 215, 0, 0.9), rgba(255, 140, 0, 0));
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
-  animation: floatLantern linear infinite;
-}
-
-/* Petals (soft glowing flakes) */
-.petal {
-  width: 15px;
-  height: 15px;
-  background: radial-gradient(circle, rgba(255, 182, 193, 0.9), rgba(255, 182, 193, 0));
-  box-shadow: 0 0 8px rgba(255, 182, 193, 0.5);
-  animation: floatPetal linear infinite;
-  filter: blur(0.5px);
-}
-
-/* Lantern animation */
-@keyframes floatLantern {
-  0% {
-    transform: translateY(100vh) translateX(0) rotate(0deg);
-    opacity: 0.8;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-10vh) translateX(20px) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-/* Petal animation */
-@keyframes floatPetal {
-  0% {
-    transform: translateY(-10vh) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(110vh) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-
+    /* Pagination styles are inherited from main style.css */
   </style>
 </head>
 
 <body>
+<!-- === Terminal Scanline Effect === -->
+<div class="scanline"></div>
 
+<!-- === Canvas for Particle Effects === -->
+<canvas id="lanternCanvas"></canvas>
 
 <!-- === HEADER === -->
 <header class="top-header">
   <div class="logo">
-    🏯 <span>DYNASTY JACKPOT</span>
+    SOL STIMULUS
   </div>
 
-  <!-- === Hamburger Menu (for mobile) === -->
-  <div class="menu-toggle" id="menu-toggle">
-    <span></span>
-    <span></span>
-    <span></span>
+  <div id="contract-address" class="contract-address">
+    Loading contract address...
   </div>
+
+  <button id="menu-toggle" class="menu-toggle" aria-label="Toggle Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 
   <nav class="nav">
     <a href="index.html" class="nav-link">Home</a>
-    <a href="lobby.html" class="nav-link">🏮 Live Lobby</a>
+    <a href="lobby.html" class="nav-link">Terminal Lobby</a>
     <a href="faq.html" class="nav-link">FAQ</a>
-    <a href="vrf-winners.html" class="nav-link active">VRF Winners</a>
+    <a href="vrf-winners.html" class="nav-link" style="color: var(--sol-green);">VRF Winners</a>
     <a
       href="https://solscan.io/account/VRFzZoJdhFWL8rkvu87LpKM3RbcVezpMEc6X5GVDr7y#cards"
       class="nav-link highlight"
-      target="_blank">
-      VRF Smart Contract
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      VRF Contract
     </a>
   </nav>
 </header>
 
+<!-- === HERO === -->
+<section class="hero">
+  <h1>VERIFIABLE RANDOM WINNERS</h1>
+  <p class="subtitle">
+    All results are cryptographically verified using <strong>Solana VRF</strong> — ensuring transparent, provably fair draws.
+  </p>
+</section>
 
-  <!-- === HERO === -->
-  <section class="hero">
-    <h1>🏆 Verifiable Random Winners</h1>
-    <p class="subtitle">All results are powered by <strong>Chainlink ORAO Classic VRF</strong> — ensuring transparent, provably fair draws.</p>
-  </section>
-
-
-
-  <!-- === FULL WINNERS TABLE === -->
+<!-- === WINNERS TABLE === -->
 <section class="winner-table-section">
-  <h2>🏮 FULL Previous Verified Winners</h2>
+  <h2>Verified Winner History</h2>
 
-  <table id="winners-table">
-    <thead>
-      <tr>
-        <th>Pool</th>
-        <th>Wallet</th>
-        <th>Amount Won</th>
-        <th>VRF File</th>
-        <th>Transaction ID</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td colspan="6">Loading winners...</td></tr>
-    </tbody>
-  </table>
+  <!-- Stats Summary -->
+  <div class="stats-summary">
+    <div class="stat-card">
+      <div class="stat-label">Total Winners</div>
+      <div class="stat-value" id="total-winners">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total Distributed</div>
+      <div class="stat-value" id="total-distributed">0 SOL</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Last Draw</div>
+      <div class="stat-value" id="last-draw" style="font-size: var(--text-base);">Loading...</div>
+    </div>
+  </div>
 
-  <!-- pagination controls -->
+  <div class="table-wrapper">
+    <table id="winners-table">
+      <thead>
+        <tr>
+          <th>Pool</th>
+          <th>Wallet Address</th>
+          <th>Amount</th>
+          <th>VRF Proof</th>
+          <th>Transaction</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="6" class="empty-state">Loading winner data...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination controls -->
   <div id="pagination" class="pagination"></div>
 </section>
 
+<footer>
+  <p>© 2025 SOL STIMULUS — Built on Solana Blockchain</p>
+  <div class="disclaimer">
+    <p><strong>DISCLAIMER</strong></p>
+    <p>Not a lottery or state-regulated gambling service. For entertainment purposse</p>
+  </div>
+</footer>
+
 <script>
-async function loadWinners() {
-  try {
-    const res = await fetch('winner.json?_=' + Date.now()); // prevent caching
-    const winners = await res.json();
-    setupPagination(winners);
-  } catch (err) {
-    console.error('Error loading winners:', err);
-    const tableBody = document.querySelector('#winners-table tbody');
-    tableBody.innerHTML = '<tr><td colspan="6">⚠️ Failed to load winners.</td></tr>';
-  }
-}
-
-function setupPagination(winners) {
-  const rowsPerPage = 10;
-  const pageCount = Math.ceil(winners.length / rowsPerPage);
-  let currentPage = 1;
-
-  const pagination = document.getElementById('pagination');
-  const tableBody = document.querySelector('#winners-table tbody');
-
-  function displayPage(page) {
-    tableBody.innerHTML = '';
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-    const pageData = winners.slice(start, end);
-
-    pageData.forEach(winner => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${winner.pool || '🏮 Unknown Pool'}</td>
-        <td>${winner.wallet || 'N/A'}</td>
-        <td>${winner.amount || '0.0 BNB'}</td>
-        <td><a href="/VRF/${winner.vrf}" class="vrf-link" target="_blank">View VRF</a></td>
-        <td><a href="${winner.tx || '#'}" class="tx-link" target="_blank">Txn Hash</a></td>
-        <td>${winner.date || 'N/A'}</td>
-      `;
-      tableBody.appendChild(row);
+  // Load contract address
+  fetch('/api/contract')
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('contract-address').textContent = data.address || 'No contract address set';
+    })
+    .catch(() => {
+      document.getElementById('contract-address').textContent = 'Failed to load contract';
     });
-  }
 
-  function renderPagination() {
-    pagination.innerHTML = '';
-    for (let i = 1; i <= pageCount; i++) {
-      const button = document.createElement('button');
-      button.textContent = i;
-      button.className = i === currentPage ? 'active' : '';
-      button.addEventListener('click', () => {
-        currentPage = i;
-        displayPage(currentPage);
-        renderPagination();
+  // Mobile menu toggle
+  const menuToggle = document.getElementById('menu-toggle');
+  const nav = document.querySelector('.nav');
+
+  menuToggle.addEventListener('click', () => {
+    nav.classList.toggle('active');
+    menuToggle.classList.toggle('open');
+  });
+
+  // Winner data loading
+  async function loadWinners() {
+    try {
+      const res = await fetch('winner.json?_=' + Date.now()); // prevent caching
+      const winners = await res.json();
+
+      // Update stats
+      document.getElementById('total-winners').textContent = winners.length;
+
+      let totalAmount = 0;
+      winners.forEach(w => {
+        const amount = parseFloat(w.amount) || 0;
+        totalAmount += amount;
       });
-      pagination.appendChild(button);
+      document.getElementById('total-distributed').textContent = totalAmount.toFixed(2) + ' SOL';
+
+      if (winners.length > 0) {
+        const lastWinner = winners[0];
+        document.getElementById('last-draw').textContent = lastWinner.date || 'N/A';
+      } else {
+        document.getElementById('last-draw').textContent = 'No draws yet';
+      }
+
+      setupPagination(winners);
+    } catch (err) {
+      console.error('Error loading winners:', err);
+      const tableBody = document.querySelector('#winners-table tbody');
+      tableBody.innerHTML = '<tr><td colspan="6" class="empty-state">Failed to load winner data</td></tr>';
     }
   }
 
-  displayPage(currentPage);
-  renderPagination();
-}
+  function setupPagination(winners) {
+    const rowsPerPage = 10;
+    const pageCount = Math.ceil(winners.length / rowsPerPage);
+    let currentPage = 1;
 
-document.addEventListener('DOMContentLoaded', () => {
-  loadWinners();
-  // Auto-refresh every 60 seconds
-  setInterval(loadWinners, 60000);
-});
+    const pagination = document.getElementById('pagination');
+    const tableBody = document.querySelector('#winners-table tbody');
+
+    function displayPage(page) {
+      tableBody.innerHTML = '';
+      const start = (page - 1) * rowsPerPage;
+      const end = start + rowsPerPage;
+      const pageData = winners.slice(start, end);
+
+      if (pageData.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="6" class="empty-state">No winners found</td></tr>';
+        return;
+      }
+
+      pageData.forEach(winner => {
+        const row = document.createElement('tr');
+
+        // Format wallet address (shorten for display)
+        const wallet = winner.wallet || 'N/A';
+        const shortWallet = wallet.length > 16
+          ? wallet.substring(0, 8) + '...' + wallet.substring(wallet.length - 6)
+          : wallet;
+
+        row.innerHTML = `
+          <td><strong style="color: var(--sol-purple);">${winner.pool || 'Unknown Pool'}</strong></td>
+          <td title="${wallet}">${shortWallet}</td>
+          <td><strong style="color: var(--sol-green);">${winner.amount || '0.0 SOL'}</strong></td>
+          <td><a href="/VRF/${winner.vrf}" class="vrf-link" target="_blank">Proof</a></td>
+          <td><a href="${winner.tx || '#'}" class="tx-link" target="_blank" rel="noopener">Hash</a></td>
+          <td>${winner.date || 'N/A'}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    function renderPagination() {
+      pagination.innerHTML = '';
+      if (pageCount <= 1) return; // Don't show pagination if only 1 page
+
+      for (let i = 1; i <= pageCount; i++) {
+        const button = document.createElement('button');
+        button.textContent = i;
+        button.className = i === currentPage ? 'active' : '';
+        button.addEventListener('click', () => {
+          currentPage = i;
+          displayPage(currentPage);
+          renderPagination();
+          // Scroll to top of table
+          document.querySelector('.winner-table-section').scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        });
+        pagination.appendChild(button);
+      }
+    }
+
+    displayPage(currentPage);
+    renderPagination();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadWinners();
+    // Auto-refresh every 60 seconds
+    setInterval(loadWinners, 60000);
+  });
 </script>
 
-
-  <!-- === FOOTER === -->
-  <footer>
-    <p>© 2025 CHINESE POWERBALL — Built on SOL Chain</p>
-    <div class="disclaimer">
-      <p><strong>免责声明 DISCLAIMER</strong></p>
-      <p>这不是彩票或国家附属游戏。仅供娱乐。请查看您当地的法律。</p>
-      <p>Not a lottery or state-affiliated game. Entertainment only.</p>
-      <p> 加密货币涉及风险 |</p>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
