@@ -234,7 +234,7 @@ document.getElementById("compatible").addEventListener("click", () => {
 });
 
 
-// === MATRIX-STYLE DIGITAL RAIN BACKGROUND ===
+// === FALLING AMERICAN FLAGS BACKGROUND ===
 const lanternCanvas = document.createElement("canvas");
 lanternCanvas.id = "lanternCanvas";
 Object.assign(lanternCanvas.style, {
@@ -256,158 +256,84 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
-// Matrix-style characters (alphanumeric + special symbols)
-const matrixSymbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:<>?/~";
+// Load American flag image
+const flagImage = new Image();
+flagImage.src = 'american flag.png';
 
-// Solana color palette
-const solanaColors = [
-  "rgba(153, 69, 255, 0.9)",   // Purple
-  "rgba(20, 241, 149, 0.9)",    // Green
-  "rgba(0, 212, 255, 0.9)",     // Blue
-  "rgba(220, 31, 255, 0.9)",    // Pink
-];
-
-class MatrixStream {
-  constructor() {
-    this.reset();
-  }
-  reset() {
-    this.x = Math.floor(Math.random() * (w / 20)) * 20;
-    this.y = Math.random() * -h;
-    this.speed = 2 + Math.random() * 5;
-    this.length = 10 + Math.random() * 20;
-    this.characters = [];
-    this.color = solanaColors[Math.floor(Math.random() * solanaColors.length)];
-
-    // Generate stream of characters
-    for (let i = 0; i < this.length; i++) {
-      this.characters.push({
-        char: matrixSymbols[Math.floor(Math.random() * matrixSymbols.length)],
-        opacity: 1 - (i / this.length)
-      });
-    }
-  }
-
-  update() {
-    this.y += this.speed;
-
-    // Randomly change characters for glitch effect
-    if (Math.random() < 0.05) {
-      const idx = Math.floor(Math.random() * this.characters.length);
-      this.characters[idx].char = matrixSymbols[Math.floor(Math.random() * matrixSymbols.length)];
-    }
-
-    if (this.y - this.length * 20 > h) {
-      this.reset();
-    }
-  }
-
-  draw(ctx) {
-    ctx.font = "16px 'JetBrains Mono', monospace";
-    ctx.textAlign = "center";
-    ctx.shadowBlur = 10;
-
-    for (let i = 0; i < this.characters.length; i++) {
-      const charY = this.y - (i * 20);
-
-      if (charY > 0 && charY < h) {
-        const char = this.characters[i];
-        const alpha = char.opacity * 0.8;
-
-        // Brightest character at the head of stream
-        if (i === 0) {
-          ctx.fillStyle = this.color.replace('0.9', '1');
-          ctx.shadowColor = this.color;
-        } else {
-          ctx.fillStyle = this.color.replace('0.9', alpha.toString());
-          ctx.shadowColor = this.color.replace('0.9', (alpha * 0.5).toString());
-        }
-
-        ctx.fillText(char.char, this.x, charY);
-      }
-    }
-
-    ctx.shadowBlur = 0;
-  }
-}
-
-// Floating geometric particles
-class GeometricParticle {
+class FallingFlag {
   constructor() {
     this.reset();
   }
 
   reset() {
     this.x = Math.random() * w;
-    this.y = Math.random() * h;
-    this.size = 2 + Math.random() * 4;
-    this.speedX = -0.5 + Math.random() * 1;
-    this.speedY = -0.5 + Math.random() * 1;
+    this.y = Math.random() * -h - 50;
+    this.speed = 1 + Math.random() * 2;
+    this.size = 20 + Math.random() * 30;
+    this.rotation = Math.random() * Math.PI * 2;
+    this.rotationSpeed = (Math.random() - 0.5) * 0.05;
+    this.swing = Math.random() * Math.PI * 2;
+    this.swingSpeed = 0.02 + Math.random() * 0.03;
     this.opacity = 0.3 + Math.random() * 0.4;
-    this.color = solanaColors[Math.floor(Math.random() * solanaColors.length)];
-    this.shape = Math.floor(Math.random() * 3); // 0: square, 1: circle, 2: triangle
   }
 
   update() {
-    this.x += this.speedX;
-    this.y += this.speedY;
+    this.y += this.speed;
+    this.rotation += this.rotationSpeed;
+    this.swing += this.swingSpeed;
+    this.x += Math.sin(this.swing) * 0.5;
 
-    if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) {
+    // Reset when flag goes off screen
+    if (this.y > h + 50) {
       this.reset();
     }
   }
 
   draw(ctx) {
+    if (!flagImage.complete) return;
+
     ctx.save();
     ctx.globalAlpha = this.opacity;
-    ctx.fillStyle = this.color;
-    ctx.shadowBlur = 5;
-    ctx.shadowColor = this.color;
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rotation);
 
-    if (this.shape === 0) {
-      // Square
-      ctx.fillRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
-    } else if (this.shape === 1) {
-      // Circle
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
-      ctx.fill();
-    } else {
-      // Triangle
-      ctx.beginPath();
-      ctx.moveTo(this.x, this.y - this.size / 2);
-      ctx.lineTo(this.x + this.size / 2, this.y + this.size / 2);
-      ctx.lineTo(this.x - this.size / 2, this.y + this.size / 2);
-      ctx.closePath();
-      ctx.fill();
-    }
+    // Enable pixelated rendering for crisp pixel art
+    ctx.imageSmoothingEnabled = false;
 
+    ctx.drawImage(
+      flagImage,
+      -this.size / 2,
+      -this.size / 2,
+      this.size,
+      this.size
+    );
     ctx.restore();
   }
 }
 
-// Create streams and particles
-const streams = Array.from({ length: Math.floor(w / 40) }, () => new MatrixStream());
-const particles = Array.from({ length: 30 }, () => new GeometricParticle());
+// Create falling flags
+const flags = Array.from({ length: 25 }, () => new FallingFlag());
 
 function animate() {
-  // Fade effect for trails
-  ctx.fillStyle = "rgba(10, 10, 15, 0.05)";
+  // Clear with slight fade for trail effect
+  ctx.fillStyle = "rgba(26, 26, 46, 0.1)";
   ctx.fillRect(0, 0, w, h);
 
-  // Draw and update everything
-  streams.forEach(s => {
-    s.update();
-    s.draw(ctx);
-  });
-
-  particles.forEach(p => {
-    p.update();
-    p.draw(ctx);
+  // Draw and update all flags
+  flags.forEach(flag => {
+    flag.update();
+    flag.draw(ctx);
   });
 
   requestAnimationFrame(animate);
 }
+
+// Start animation once flag image is loaded
+flagImage.onload = () => {
+  animate();
+};
+
+// Start animation immediately (will wait for image to load)
 animate();
 
 // === DEV PANEL LOGIC ===
